@@ -8,6 +8,13 @@ package com.collerton.samuraisword.server.test;
 import com.collerton.samuraisword.server.model.GameCharacter;
 import com.collerton.samuraisword.server.model.Player;
 import com.collerton.samuraisword.server.model.characters.Benkei;
+import com.collerton.samuraisword.server.model.characters.Chiyome;
+import com.collerton.samuraisword.server.model.characters.Ginchiyo;
+import com.collerton.samuraisword.server.model.characters.Goemon;
+import com.collerton.samuraisword.server.model.characters.Hanzo;
+import com.collerton.samuraisword.server.model.characters.Hideyoshi;
+import com.collerton.samuraisword.server.model.characters.Ieyasu;
+import com.collerton.samuraisword.server.model.characters.Kojiro;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -178,7 +185,7 @@ public class GameCharacterTest {
     @DisplayName("╯°□°）╯")
     public void testKojirō() {
         player = new Player("name");
-        character = new Kojirō();
+        character = new Kojiro();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
         assertEquals(0, player.getAttackBonus());
@@ -191,4 +198,6 @@ public class GameCharacterTest {
         assertTrue(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
+    
+    //TODO finish characters (musachi, nobunaga, tomoe, ushiwaka)
 }

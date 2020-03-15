@@ -24,6 +24,8 @@ public class Player {
     private boolean suffersLessDamage;
     private boolean canParryWithWeapon;
     private boolean canPickExtraCard;
+    private boolean canPickFromCemetery;
+    private boolean ignoresDifficulty;
     
     private Role role;
     private GameCharacter character;
@@ -40,6 +42,8 @@ public class Player {
         this.suffersLessDamage = false;
         this.canParryWithWeapon = false;
         this.canPickExtraCard = false;
+        this.canPickFromCemetery = false;
+        this.ignoresDifficulty = false;
         this.role = null;
         this.character = null;
         this.cards = new LinkedList<>();
@@ -162,6 +166,30 @@ public class Player {
     
     public void setCanParryWithWeapon() {
         this.canParryWithWeapon = true;
+    }
+    
+    public boolean canPickExtraCard() {
+        return this.canPickExtraCard;
+    }
+    
+    public void setCanPickExtraCard() {
+        this.canPickExtraCard = true;
+    }
+    
+    public boolean canPickFromCemetery() {
+        return this.canPickFromCemetery;
+    }
+    
+    public void setCanPickFromCemetery() {
+        this.canPickFromCemetery = true;
+    }
+    
+    public boolean ignoresDifficulty() {
+        return this.ignoresDifficulty;
+    }
+    
+    public void setIgnoresDifficulty() {
+        this.ignoresDifficulty = true;
     }
     
     public void giveCard(DeckCard card) {
