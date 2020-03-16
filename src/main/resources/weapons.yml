@@ -1,0 +1,35 @@
+name: "Bokken"
+attackPoints: 1
+difficulty: 1
+---
+name: "Shuriken"
+attackPoints: 1
+difficulty: 3
+---
+name: "Katana"
+attackPoints: 3
+difficulty: 2
+---
+name: "Kusarigama"
+attackPoints: 2
+difficulty: 2
+---
+name: "Kanabo"
+attackPoints: 2
+difficulty: 3
+---
+name: "Bo"
+attackPoints: 1
+difficulty: 2
+---
+name: "Pearl Harbour"
+attackPoints: 99
+difficulty: 99
+---
+name: "Tanegashima"
+attackPoints: 1
+difficulty: 5
+---
+name: "Nagayari"
+attackPoints: 2
+difficulty: 4

@@ -5,9 +5,6 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.model.GameSingleton;
-import com.collerton.samuraisword.server.model.Weapon;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author thomas
  */
-public class GameSingletonTest {
+public class ActionTest {
     
-    public GameSingletonTest() {
+    public ActionTest() {
     }
     
     @BeforeAll
@@ -40,9 +37,8 @@ public class GameSingletonTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void testJujitsu() {
+        
+    }
 }

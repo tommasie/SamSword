@@ -7,6 +7,7 @@ package com.collerton.samuraisword.server.test;
 
 import com.collerton.samuraisword.server.config.ConfigFactory;
 import com.collerton.samuraisword.server.model.Role;
+import com.collerton.samuraisword.server.model.Weapon;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

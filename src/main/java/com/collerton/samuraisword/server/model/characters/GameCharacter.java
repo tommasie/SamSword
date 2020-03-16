@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.collerton.samuraisword.server.model;
+package com.collerton.samuraisword.server.model.characters;
+
+import com.collerton.samuraisword.server.model.Player;
 
 /**
  *

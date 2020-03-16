@@ -13,10 +13,35 @@ public class Weapon extends DeckCard{
     
     private int attackPoints;
     private int difficulty;
-
-    public Weapon(String name, int attackPoints, int difficulty) {
+    
+     public Weapon(String name, int attackPoints, int difficulty) {
         super(name);
         this.attackPoints = attackPoints;
+        this.difficulty = difficulty;
+    }
+     
+    public Weapon() {
+        this("", 0, 0);
+    }
+     
+    // For the Yaml parser
+    public Weapon(String s) {
+        this("", 0, 0);
+    }
+
+    public int getAttackPoints() {
+        return attackPoints;
+    }
+
+    public void setAttackPoints(int attackPoints) {
+        this.attackPoints = attackPoints;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
     

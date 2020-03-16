@@ -5,7 +5,7 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.model.GameCharacter;
+import com.collerton.samuraisword.server.model.characters.GameCharacter;
 import com.collerton.samuraisword.server.model.Player;
 import com.collerton.samuraisword.server.model.characters.Benkei;
 import com.collerton.samuraisword.server.model.characters.Chiyome;

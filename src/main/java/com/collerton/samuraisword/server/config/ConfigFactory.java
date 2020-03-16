@@ -6,6 +6,7 @@
 package com.collerton.samuraisword.server.config;
 
 import com.collerton.samuraisword.server.model.Role;
+import com.collerton.samuraisword.server.model.Weapon;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ConfigFactory {
     
     private int numPlayers;
     private String configPath;
+    private static String weaponsFilePath = "weapons.yml";
     
     private List<Role> roles;
     
@@ -58,6 +60,5 @@ public class ConfigFactory {
         parseConfiguration();
         return roles;
     }
-    
-    
+ 
 }

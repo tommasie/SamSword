@@ -5,15 +5,21 @@
  */
 package com.collerton.samuraisword.server.model;
 
+import com.collerton.samuraisword.server.model.properties.Property;
+import com.collerton.samuraisword.server.model.characters.GameCharacter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author thomas
  */
 public class Player {
+    
+    private static final GameSingleton GAME = GameSingleton.getInstance();
     
     private final String name;
     private int honorPoints;
@@ -30,7 +36,8 @@ public class Player {
     private Role role;
     private GameCharacter character;
     private final List<DeckCard> cards;
-    private final List<Property> playedProperties;
+    private Map<String, List<Property>> playedProperties;
+    //private final List<Property> playedProperties;
     
     public Player(String name) {
         this.name = name;
@@ -47,7 +54,7 @@ public class Player {
         this.role = null;
         this.character = null;
         this.cards = new LinkedList<>();
-        this.playedProperties = new ArrayList<>();
+        this.playedProperties = new HashMap<>();
     }
 
     public String getName() {
@@ -108,7 +115,7 @@ public class Player {
         return cards;
     }
 
-    public List<Property> getPlayedProperties() {
+    public Map<String, List<Property>> getPlayedProperties() {
         return playedProperties;
     }
     
@@ -122,6 +129,9 @@ public class Player {
     
     public void decreseHonorPoints() {
         this.honorPoints -= 1;
+        if(this.honorPoints == 0) {
+            GAME.endGame();
+        }
     }
     
     public void resetResistancePoints() {
@@ -200,18 +210,34 @@ public class Player {
         this.cards.remove(index);
     }
     
-    public void removeCardFromTable(Property property) {
-        this.playedProperties.remove(property);
+    public void movePropertyToTable(Property property) {
+        this.cards.remove(property);
+        this.playedProperties.putIfAbsent(property.getName(), new LinkedList<>());
+        List<Property> properties = playedProperties.get(property.getName());
+        if(properties == null)
+            System.out.println("mozzarella");
+        properties.add(property);
     }
     
-    public void moveCardToTable(Property property) {
-        this.cards.remove(property);
-        this.playedProperties.add(property);
+    public void discardProperty(String propertyName) {
+        List<Property> propertyList = playedProperties.get(propertyName);
+        if(!propertyList.isEmpty()) {
+            Property p = propertyList.get(0);
+            p.decreasePlayerAttributes(this);
+            propertyList.remove(0);
+        }
+    }
+    
+    public void playProperty(Property property) {
+        property.play(this);
     }
     
     public void discardProperty(Property property) {
-        property.decreasePlayerAttributes(this);
-        //TODO
+        discardProperty(property.getName());
+    }
+    
+    public DeckCard discardCard(int index) {
+        return cards.remove(index);
     }
     
 }

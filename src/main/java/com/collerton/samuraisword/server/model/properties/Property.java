@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.collerton.samuraisword.server.model;
+package com.collerton.samuraisword.server.model.properties;
+
+import com.collerton.samuraisword.server.model.DeckCard;
+import com.collerton.samuraisword.server.model.Player;
 
 /**
  *
@@ -11,22 +14,29 @@ package com.collerton.samuraisword.server.model;
  */
 public abstract class Property extends DeckCard{
     
-    public Property(String name) {
+    private String description;
+    
+    public Property(String name, String description) {
         super(name);
+        this.description = description;
     }
     
     public void play(Player player)
     {
-        increasePlayerAttributes(player);
         moveCardToTable(player);
+        increasePlayerAttributes(player);
+    }
+
+    public String getDescription() {
+        return description;
     }
     
     protected abstract void increasePlayerAttributes(Player player);
     
-    protected abstract void decreasePlayerAttributes(Player player);
+    public abstract void decreasePlayerAttributes(Player player);
     
     private void moveCardToTable(Player player) {
-        player.moveCardToTable(this);
+        player.movePropertyToTable(this);
     }
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.collerton.samuraisword.server.model.characters;
+package com.collerton.samuraisword.server.model.properties;
 
 import com.collerton.samuraisword.server.model.Player;
 
@@ -11,15 +11,20 @@ import com.collerton.samuraisword.server.model.Player;
  *
  * @author thomas
  */
-public class Benkei extends GameCharacter{
+public class Armour extends Property{
 
-    public Benkei() {
-        super("Benkei", 5);
+    public Armour() {
+        super("Armour", "description");
     }
 
     @Override
-    public void play(Player player) {
+    protected void increasePlayerAttributes(Player player) {
         player.increaseDistanceBonus();
+    }
+
+    @Override
+    public void decreasePlayerAttributes(Player player) {
+        player.decreaseDistanceBonus();
     }
     
 }

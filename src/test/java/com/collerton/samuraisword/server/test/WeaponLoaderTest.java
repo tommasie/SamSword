@@ -5,6 +5,7 @@
  */
 package com.collerton.samuraisword.server.test;
 
+import com.collerton.samuraisword.server.config.WeaponLoader;
 import com.collerton.samuraisword.server.model.GameSingleton;
 import com.collerton.samuraisword.server.model.Weapon;
 import java.util.List;
@@ -19,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author thomas
  */
-public class GameSingletonTest {
+public class WeaponLoaderTest {
     
-    public GameSingletonTest() {
+    public WeaponLoaderTest() {
     }
     
     @BeforeAll
@@ -40,9 +41,14 @@ public class GameSingletonTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void testLoadWeapons() {
+        WeaponLoader loader = new WeaponLoader();
+        List<Weapon> weapons = loader.loadWeapons();
+        assertNotNull(weapons);
+        assertEquals(9, weapons.size());
+        assertEquals("Bokken", weapons.get(0).getName());
+        assertEquals(1, weapons.get(0).getAttackPoints());
+        assertEquals(1, weapons.get(0).getDifficulty());
+    }
 }
