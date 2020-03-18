@@ -1,15 +1,27 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2020 tommasie
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.collerton.samuraisword.server.model;
 
 /**
- *
- * @author thomas
+ * This class models any Weapon card, as they don't have specific traits
+ * 
+ * @author tommasie
  */
-public class Weapon extends DeckCard{
+public class Weapon extends DeckCard {
     
     private int attackPoints;
     private int difficulty;
@@ -45,8 +57,12 @@ public class Weapon extends DeckCard{
         this.difficulty = difficulty;
     }
     
-    public boolean attack(Player player) {
-        return true;
+    @Override
+    protected void playInternal() { }
+
+    @Override
+    protected void playInternal(Player player) {
+        //TODO how to handle weapons?
     }
 
     

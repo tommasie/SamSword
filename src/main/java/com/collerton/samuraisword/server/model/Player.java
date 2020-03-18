@@ -1,43 +1,69 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2020 tommasie
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.collerton.samuraisword.server.model;
 
+import com.collerton.samuraisword.server.excpetions.GameException;
 import com.collerton.samuraisword.server.model.properties.Property;
 import com.collerton.samuraisword.server.model.characters.GameCharacter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author thomas
+ * This class models the player of the game.
+ * Each player has a set of properties defined by the character he is given
+ * and by the Property cards he can play throughout the game.
+ * 
+ * @author tommasie
  */
 public class Player {
     
     private static final GameSingleton GAME = GameSingleton.getInstance();
     
+    // Username, unique for each game
     private final String name;
+    
+    // Main player points
     private int honorPoints;
     private int resistancePoints;
+    
+    // List of properties affected by the character and Property cards
     private int distanceBonus;
     private int attackBonus;
     private int weaponMultiplier;
     private boolean suffersLessDamage;
+    private boolean damageOnlyFromWeapons;
     private boolean canParryWithWeapon;
     private boolean canPickExtraCard;
     private boolean canPickFromCemetery;
     private boolean ignoresDifficulty;
     
+    // Role given at the beginning of the game
     private Role role;
+    
+    // Character given at the beginning of the game
     private GameCharacter character;
+    
+    // Cards in the player's hand
     private final List<DeckCard> cards;
+    
+    // Property cards played the player and shown to everyone
     private Map<String, List<Property>> playedProperties;
-    //private final List<Property> playedProperties;
     
     public Player(String name) {
         this.name = name;
@@ -47,6 +73,7 @@ public class Player {
         this.distanceBonus = 0;
         this.weaponMultiplier= 1;
         this.suffersLessDamage = false;
+        this.damageOnlyFromWeapons = false;
         this.canParryWithWeapon = false;
         this.canPickExtraCard = false;
         this.canPickFromCemetery = false;
@@ -107,7 +134,9 @@ public class Player {
 
     public void setCharacter(GameCharacter character) {
         this.character = character;
-        this.character.play(this);
+        this.character.setOwner(this);
+        // Bump the player's properties
+        this.character.play();
         resetResistancePoints();
     }
 
@@ -130,6 +159,7 @@ public class Player {
     public void decreseHonorPoints() {
         this.honorPoints -= 1;
         if(this.honorPoints == 0) {
+            System.out.println("I am a loser");
             GAME.endGame();
         }
     }
@@ -170,6 +200,14 @@ public class Player {
         this.suffersLessDamage = true;
     }
     
+    public boolean getDamageOnlyFromWeapons() {
+        return this.damageOnlyFromWeapons;
+    }
+    
+    public void setDamageOnlyFromWeapons() {
+        this.damageOnlyFromWeapons = true;
+    }
+    
     public boolean canParryWithWeapon() {
         return this.canParryWithWeapon;
     }
@@ -203,6 +241,7 @@ public class Player {
     }
     
     public void giveCard(DeckCard card) {
+        card.setOwner(this);
         this.cards.add(card);
     }
     
@@ -210,7 +249,10 @@ public class Player {
         this.cards.remove(index);
     }
     
-    public void movePropertyToTable(Property property) {
+    public void movePropertyToTable(Property property) throws GameException {
+        if (!this.cards.contains(property)) {
+            throw new GameException("This card is not in the player's hand");
+        }
         this.cards.remove(property);
         this.playedProperties.putIfAbsent(property.getName(), new LinkedList<>());
         List<Property> properties = playedProperties.get(property.getName());
@@ -223,13 +265,21 @@ public class Player {
         List<Property> propertyList = playedProperties.get(propertyName);
         if(!propertyList.isEmpty()) {
             Property p = propertyList.get(0);
-            p.decreasePlayerAttributes(this);
+            p.decreasePlayerAttributes();
+            p.setOwner(null);
             propertyList.remove(0);
         }
     }
     
     public void playProperty(Property property) {
-        property.play(this);
+        try {
+            movePropertyToTable(property);
+            property.play();
+        } catch(GameException e) {
+            e.printStackTrace();
+        }
+        
+        
     }
     
     public void discardProperty(Property property) {
@@ -240,5 +290,39 @@ public class Player {
         return cards.remove(index);
     }
     
+    public void discardCard(DeckCard card) {
+        cards.remove(card);
+        GAME.addCardToCemetery(card);
+    }
+    
+    /** 
+     * Check that the player can be attacked or skipped for the distance count
+     * @return boolean
+     */
+    public boolean canPlay() {
+        return resistancePoints == 0 || getCards().isEmpty();
+    }
+    
+    public void playJujitsu() {
+        /* Ideally, the user should choose wether to give a weapon or a 
+         * resistance point, and perhaps forget he can not give anything (like I usually do)
+         */
+        if (canPlay() && !damageOnlyFromWeapons) {
+            //TODO pseudo AI?
+        } else {
+            System.out.println(name + " is not affected");
+        }
+    }
+    
+    public void playBattlecry() {
+        /* Ideally, the user should choose wether to give a parry or a 
+         * resistance point, and perhaps forget he can not give anything (like I usually do)
+         */
+        if (canPlay() && !damageOnlyFromWeapons) {
+            //TODO pseudo AI?
+        } else {
+            System.out.println(name + " is not affected");
+        }
+    }
+    
 }
-

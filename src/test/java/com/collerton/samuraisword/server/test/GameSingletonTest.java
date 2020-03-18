@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author thomas
+ * @author tommasie
  */
 public class GameSingletonTest {
     

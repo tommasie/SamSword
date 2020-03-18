@@ -14,22 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.model.characters;
+package com.collerton.samuraisword.server.actions;
+
+import com.collerton.samuraisword.server.model.DeckCard;
+import com.collerton.samuraisword.server.model.Player;
 
 /**
- * Benkei increases your distance by one point
- * 
+ * This class models the Geisha card,
+ * where the owner chooses a card from the table
+ * or the hand of another player amd discards it
  * @author tommasie
  */
-public class Benkei extends GameCharacter{
+public class Geisha extends DeckCard {
 
-    public Benkei() {
-        super("Benkei", 5);
+    public Geisha() {
+        super("Geisha");
     }
 
     @Override
-    public void play() {
-        owner.increaseDistanceBonus();
+    protected void playInternal() {
+    }
+
+    @Override
+    protected void playInternal(Player player) {
     }
     
 }

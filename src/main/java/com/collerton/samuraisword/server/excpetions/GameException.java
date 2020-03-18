@@ -14,22 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.model.characters;
+package com.collerton.samuraisword.server.excpetions;
 
 /**
- * Benkei increases your distance by one point
- * 
+ * Potentially useless exception subclass
  * @author tommasie
  */
-public class Benkei extends GameCharacter{
+public class GameException extends Exception {
 
-    public Benkei() {
-        super("Benkei", 5);
+    public GameException(String string) {
+        super(string);
     }
 
-    @Override
-    public void play() {
-        owner.increaseDistanceBonus();
+    public GameException(String string, Throwable thrwbl) {
+        super(string, thrwbl);
     }
+    
     
 }
