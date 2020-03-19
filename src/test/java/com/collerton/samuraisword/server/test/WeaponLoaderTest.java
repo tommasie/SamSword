@@ -56,9 +56,9 @@ public class WeaponLoaderTest {
         WeaponLoader loader = new WeaponLoader();
         List<Weapon> weapons = loader.loadWeapons();
         assertNotNull(weapons);
-        assertEquals(9, weapons.size());
-        assertEquals("Bokken", weapons.get(0).getName());
+        assertEquals(33, weapons.size());
+        assertEquals("Bō", weapons.get(0).getName());
         assertEquals(1, weapons.get(0).getAttackPoints());
-        assertEquals(1, weapons.get(0).getDifficulty());
+        assertEquals(2, weapons.get(0).getDifficulty());
     }
 }

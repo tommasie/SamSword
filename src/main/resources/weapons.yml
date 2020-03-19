@@ -1,26 +1,110 @@
+name: "Bō"
+attackPoints: 1
+difficulty: 2
+---
+name: "Bō"
+attackPoints: 1
+difficulty: 2
+---
+name: "Bō"
+attackPoints: 1
+difficulty: 2
+---
+name: "Bō"
+attackPoints: 1
+difficulty: 2
+---
+name: "Bō"
+attackPoints: 1
+difficulty: 2
+---
 name: "Bokken"
 attackPoints: 1
 difficulty: 1
 ---
-name: "Shuriken"
+name: "Bokken"
 attackPoints: 1
+difficulty: 1
+---
+name: "Bokken"
+attackPoints: 1
+difficulty: 1
+---
+name: "Bokken"
+attackPoints: 1
+difficulty: 1
+---
+name: "Bokken"
+attackPoints: 1
+difficulty: 1
+---
+name: "Bokken"
+attackPoints: 1
+difficulty: 1
+---
+name: "Daikyū"
+attackPoints: 2
+difficulty: 5
+---
+name: "Kanabō"
+attackPoints: 2
 difficulty: 3
 ---
 name: "Katana"
 attackPoints: 3
 difficulty: 2
 ---
+name: "Kiseru"
+attackPoints: 2
+difficulty: 1
+---
+name: "Kiseru"
+attackPoints: 2
+difficulty: 1
+---
+name: "Kiseru"
+attackPoints: 2
+difficulty: 1
+---
+name: "Kiseru"
+attackPoints: 2
+difficulty: 1
+---
+name: "Kiseru"
+attackPoints: 2
+difficulty: 1
+---
 name: "Kusarigama"
 attackPoints: 2
 difficulty: 2
 ---
-name: "Kanabo"
+name: "Kusarigama"
 attackPoints: 2
-difficulty: 3
----
-name: "Bo"
-attackPoints: 1
 difficulty: 2
+---
+name: "Kusarigama"
+attackPoints: 2
+difficulty: 2
+---
+name: "Kusarigama"
+attackPoints: 2
+difficulty: 2
+---
+name: "Nagayari"
+attackPoints: 2
+difficulty: 4
+---
+name: "Naginata"
+attackPoints: 1
+difficulty: 4
+---
+name: "Naginata"
+attackPoints: 1
+difficulty: 4
+---
+name: "Nodachi"
+attackPoints: 3
+difficulty: 3
 ---
 name: "Pearl Harbour"
 attackPoints: 99
@@ -30,6 +114,18 @@ name: "Tanegashima"
 attackPoints: 1
 difficulty: 5
 ---
-name: "Nagayari"
-attackPoints: 2
-difficulty: 4
+name: "Shuriken"
+attackPoints: 1
+difficulty: 3
+---
+name: "Shuriken"
+attackPoints: 1
+difficulty: 3
+---
+name: "Shuriken"
+attackPoints: 1
+difficulty: 3
+---
+name: "Wazikashi"
+attackPoints: 3
+difficulty: 1
