@@ -16,10 +16,10 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.actions.Daimyo;
-import com.collerton.samuraisword.server.actions.Distraction;
-import com.collerton.samuraisword.server.actions.Geisha;
-import com.collerton.samuraisword.server.actions.Respiration;
+import com.collerton.samuraisword.server.model.actions.Daimyo;
+import com.collerton.samuraisword.server.model.actions.Distraction;
+import com.collerton.samuraisword.server.model.actions.Geisha;
+import com.collerton.samuraisword.server.model.actions.Meditation;
 import com.collerton.samuraisword.server.model.DeckCard;
 import com.collerton.samuraisword.server.model.Player;
 import com.collerton.samuraisword.server.model.Weapon;
@@ -74,7 +74,7 @@ public class ActionTest {
         Player receiver = new Player("receiver");
         GameCharacter benkei = new Benkei();
         player.setCharacter(benkei);
-        DeckCard respiration = new Respiration();
+        DeckCard respiration = new Meditation();
         respiration.setOwner(player);
         respiration.play(receiver);
         assertEquals(5, player.getResistancePoints());

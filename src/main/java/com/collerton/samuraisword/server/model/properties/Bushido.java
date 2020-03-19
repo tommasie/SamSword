@@ -14,34 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.config;
+package com.collerton.samuraisword.server.model.properties;
 
 import com.collerton.samuraisword.server.model.DeckCard;
-import com.collerton.samuraisword.server.model.Weapon;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+import com.collerton.samuraisword.server.model.Player;
 
 /**
- * YAML weapon loader
+ * This class models the Bushido card
  * @author tommasie
  */
-public class WeaponLoader {
-    
-    public List<DeckCard> loadWeapons() {
-        Yaml yaml = new Yaml(new Constructor(Weapon.class));
-        InputStream inputStream = this.getClass()
-          .getClassLoader()
-          .getResourceAsStream("weapons.yml");
-        
-        List<DeckCard> weapons = new ArrayList<>();
-        for (Object object : yaml.loadAll(inputStream)) {
-            Weapon weapon = (Weapon)object;
-            weapons.add(weapon);
-        }
-        return weapons;
+public class Bushido extends DeckCard {
+
+    public Bushido() {
+        super("Bushido");
+    }
+
+    @Override
+    protected void playInternal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void playInternal(Player player) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

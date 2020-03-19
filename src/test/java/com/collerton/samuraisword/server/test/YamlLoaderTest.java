@@ -16,8 +16,8 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.config.WeaponLoader;
-import com.collerton.samuraisword.server.model.Weapon;
+import com.collerton.samuraisword.server.config.YamlLoader;
+import com.collerton.samuraisword.server.model.DeckCard;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -30,9 +30,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author tommasie
  */
-public class WeaponLoaderTest {
+public class YamlLoaderTest {
     
-    public WeaponLoaderTest() {
+    private YamlLoader cardsLoader;
+    
+    public YamlLoaderTest() {
     }
     
     @BeforeAll
@@ -45,6 +47,7 @@ public class WeaponLoaderTest {
     
     @BeforeEach
     public void setUp() {
+        cardsLoader = new YamlLoader();
     }
     
     @AfterEach
@@ -52,13 +55,27 @@ public class WeaponLoaderTest {
     }
 
     @Test
-    public void testLoadWeapons() {
-        WeaponLoader loader = new WeaponLoader();
-        List<Weapon> weapons = loader.loadWeapons();
-        assertNotNull(weapons);
-        assertEquals(33, weapons.size());
-        assertEquals("Bō", weapons.get(0).getName());
-        assertEquals(1, weapons.get(0).getAttackPoints());
-        assertEquals(2, weapons.get(0).getDifficulty());
+    public void testLoadConcreteActions() {
+        List<DeckCard> cards = cardsLoader.getConcreteActions();
+        assertEquals(43, cards.size());
+        assertTrue(cards.get(0) instanceof DeckCard);
+        assertEquals("Battlecry", cards.get(0).getName());
+        
+    }
+    
+    @Test
+    public void testLoadConcreteProperties() {
+        List<DeckCard> cards = cardsLoader.getConcreteProperties();
+        assertEquals(15, cards.size());
+        assertTrue(cards.get(0) instanceof DeckCard);
+        assertEquals("Armour", cards.get(0).getName());
+    }
+    
+    @Test
+    public void testLoadConcreteWeapons() {
+        List<DeckCard> cards = cardsLoader.getConcreteWeapons();
+        assertEquals(33, cards.size());
+        assertTrue(cards.get(0) instanceof DeckCard);
+        assertEquals("Bō", cards.get(0).getName());
     }
 }

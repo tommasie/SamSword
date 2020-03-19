@@ -14,25 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
+package com.collerton.samuraisword.server.model.actions;
 
 import com.collerton.samuraisword.server.model.DeckCard;
 import com.collerton.samuraisword.server.model.Player;
+import java.util.Random;
 
 /**
- * This class model the Respiration card, where the owner resets its
- * resistance points and lets another player pick a card
+ * This class model the Distraction card, where the owner can steal
+ * one card from another player's hand
  * @author tommasie
  */
-public class Respiration extends DeckCard {
+public class Distraction extends DeckCard {
 
-    public Respiration() {
-        super("Respiration");
-    }
-    
-    public void play(Player player, Player beneficiario) {
-        player.resetResistancePoints();
-        beneficiario.giveCard(GAME.pickCardFromDeck());
+    public Distraction() {
+        super("Distraction");
     }
 
     @Override
@@ -40,8 +36,9 @@ public class Respiration extends DeckCard {
 
     @Override
     protected void playInternal(Player player) {
-        owner.resetResistancePoints();
-        player.giveCard(GAME.pickCardFromDeck());
+        Random rn = new Random();
+        int index = rn.nextInt(player.getCards().size());
+        owner.giveCard(player.discardCard(index));
     }
     
 }

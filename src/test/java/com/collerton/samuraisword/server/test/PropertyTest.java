@@ -18,7 +18,9 @@ package com.collerton.samuraisword.server.test;
 
 import com.collerton.samuraisword.server.model.Player;
 import com.collerton.samuraisword.server.model.properties.Armour;
+import com.collerton.samuraisword.server.model.properties.Concentration;
 import com.collerton.samuraisword.server.model.properties.Property;
+import com.collerton.samuraisword.server.model.properties.QuickExtraction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,5 +60,29 @@ public class PropertyTest {
         armour.setOwner(player);
         armour.play();
         assertEquals(1, player.getDistanceBonus());
+        assertEquals(0, player.getAttackBonus());
+        assertEquals(1, player.getWeaponMultiplier());
+    }
+    
+    @Test
+    public void testConcentration() {
+        Player player = new Player("name");
+        Property concentration = new Concentration();
+        concentration.setOwner(player);
+        concentration.play();
+        assertEquals(0, player.getDistanceBonus());
+        assertEquals(0, player.getAttackBonus());
+        assertEquals(2, player.getWeaponMultiplier());
+    }
+    
+    @Test
+    public void testQuickExtraction() {
+        Player player = new Player("name");
+        Property quickExtraction = new QuickExtraction();
+        quickExtraction.setOwner(player);
+        quickExtraction.play();
+        assertEquals(0, player.getDistanceBonus());
+        assertEquals(1, player.getAttackBonus());
+        assertEquals(1, player.getWeaponMultiplier());
     }
 }

@@ -28,7 +28,7 @@ public class Concentration extends Property {
     }
 
     @Override
-    protected void increasePlayerAttributes() {
+    protected void playInternal() {
         owner.increaseWeaponMultiplier();
     }
 

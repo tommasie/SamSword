@@ -14,28 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
+package com.collerton.samuraisword.server.model.actions;
 
 import com.collerton.samuraisword.server.model.DeckCard;
 import com.collerton.samuraisword.server.model.Player;
 
 /**
- * This class models the Battlecry card,
- * where all players except the owner must discard
- * either a parry or a resistance point
+ * This class model the Jujitsu cards,
+ * where all players expect the owner have to discard
+ * either a weapon resitance point
  * @author tommasie
  */
-public class Battlecry extends DeckCard {
+public class Jujitsu extends DeckCard {
 
-    public Battlecry() {
-        super("Battlecry");
+    public Jujitsu() {
+        super("Jujitsu");
     }
 
     @Override
     protected void playInternal() {
         for(Player p : GAME.getPlayers()) {
             if(!p.equals(owner)) {
-                //TODO choose between life or parry
+                //TODO choose between life or weapon
             }
         }
     }

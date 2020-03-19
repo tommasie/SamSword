@@ -14,31 +14,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
-
-import com.collerton.samuraisword.server.model.DeckCard;
-import com.collerton.samuraisword.server.model.Player;
-import java.util.Random;
+package com.collerton.samuraisword.server.config;
 
 /**
- * This class model the Distraction card, where the owner can steal
- * one card from another player's hand
+ *
  * @author tommasie
  */
-public class Distraction extends DeckCard {
-
-    public Distraction() {
-        super("Distraction");
+public class CardsYamlModel {
+    
+    private String name;
+    private int quantity;
+    
+    public CardsYamlModel() {
+        name = "";
+        quantity = 0;
+    }
+    
+    public CardsYamlModel(String s) {
+        this();
     }
 
-    @Override
-    protected void playInternal() { }
-
-    @Override
-    protected void playInternal(Player player) {
-        Random rn = new Random();
-        int index = rn.nextInt(player.getCards().size());
-        owner.giveCard(player.discardCard(index));
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
     
 }

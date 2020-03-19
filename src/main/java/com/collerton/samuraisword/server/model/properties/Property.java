@@ -37,15 +37,8 @@ public abstract class Property extends DeckCard {
     }
 
     @Override
-    protected void playInternal() {
-        increasePlayerAttributes();
-    }
-
-    @Override
     protected void playInternal(Player player) { }
 
-    protected abstract void increasePlayerAttributes();
-    
     public abstract void decreasePlayerAttributes();
     
 }

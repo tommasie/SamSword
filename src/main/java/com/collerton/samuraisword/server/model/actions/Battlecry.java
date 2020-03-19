@@ -14,21 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.excpetions;
+package com.collerton.samuraisword.server.model.actions;
+
+import com.collerton.samuraisword.server.model.DeckCard;
+import com.collerton.samuraisword.server.model.Player;
 
 /**
- * Potentially useless exception subclass
+ * This class models the Battlecry card,
+ * where all players except the owner must discard
+ * either a parry or a resistance point
  * @author tommasie
  */
-public class GameException extends Exception {
+public class Battlecry extends DeckCard {
 
-    public GameException(String string) {
-        super(string);
+    public Battlecry() {
+        super("Battlecry");
     }
 
-    public GameException(String string, Throwable thrwbl) {
-        super(string, thrwbl);
+    @Override
+    protected void playInternal() {
+        for(Player p : GAME.getPlayers()) {
+            if(!p.equals(owner)) {
+                //TODO choose between life or parry
+            }
+        }
     }
-    
+
+    @Override
+    protected void playInternal(Player player) { }
     
 }

@@ -14,27 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.model.properties;
+package com.collerton.samuraisword.server.exceptions;
 
 /**
- * This class models the Armour property,
- * where the owner receives an +1 distance bonus
+ * Potentially useless exception subclass
  * @author tommasie
  */
-public class Armour extends Property {
+public class GameException extends Exception {
 
-    public Armour() {
-        super("Armour", "description");
+    public GameException(String string) {
+        super(string);
     }
 
-    @Override
-    protected void playInternal() {
-        owner.increaseDistanceBonus();
+    public GameException(String string, Throwable thrwbl) {
+        super(string, thrwbl);
     }
-
-    @Override
-    public void decreasePlayerAttributes() {
-        owner.decreaseDistanceBonus();
-    }
+    
     
 }

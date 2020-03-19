@@ -14,29 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
+package com.collerton.samuraisword.server.model.actions;
 
 import com.collerton.samuraisword.server.model.DeckCard;
 import com.collerton.samuraisword.server.model.Player;
 
 /**
- * This class models the Geisha card,
- * where the owner chooses a card from the table
- * or the hand of another player amd discards it
+ * This class model the Respiration card, where the owner resets its
+ * resistance points and lets another player pick a card
  * @author tommasie
  */
-public class Geisha extends DeckCard {
+public class Meditation extends DeckCard {
 
-    public Geisha() {
-        super("Geisha");
+    public Meditation() {
+        super("Respiration");
+    }
+    
+    public void play(Player player, Player beneficiario) {
+        player.resetResistancePoints();
+        beneficiario.giveCard(GAME.pickCardFromDeck());
     }
 
     @Override
-    protected void playInternal() {
-    }
+    protected void playInternal() { }
 
     @Override
     protected void playInternal(Player player) {
+        owner.resetResistancePoints();
+        player.giveCard(GAME.pickCardFromDeck());
     }
     
 }

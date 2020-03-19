@@ -16,13 +16,14 @@
  */
 package com.collerton.samuraisword.server.model;
 
-import com.collerton.samuraisword.server.excpetions.GameException;
+import com.collerton.samuraisword.server.exceptions.GameException;
 import com.collerton.samuraisword.server.model.properties.Property;
 import com.collerton.samuraisword.server.model.characters.GameCharacter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * This class models the player of the game.
@@ -63,7 +64,7 @@ public class Player {
     private final List<DeckCard> cards;
     
     // Property cards played the player and shown to everyone
-    private Map<String, List<Property>> playedProperties;
+    private Map<String, Stack<Property>> playedProperties;
     
     public Player(String name) {
         this.name = name;
@@ -144,7 +145,7 @@ public class Player {
         return cards;
     }
 
-    public Map<String, List<Property>> getPlayedProperties() {
+    public Map<String, Stack<Property>> getPlayedProperties() {
         return playedProperties;
     }
     
@@ -254,21 +255,23 @@ public class Player {
             throw new GameException("This card is not in the player's hand");
         }
         this.cards.remove(property);
-        this.playedProperties.putIfAbsent(property.getName(), new LinkedList<>());
-        List<Property> properties = playedProperties.get(property.getName());
+        this.playedProperties.putIfAbsent(property.getName(), new Stack<>());
+        Stack<Property> properties = playedProperties.get(property.getName());
         if(properties == null)
             System.out.println("mozzarella");
         properties.add(property);
     }
     
-    public void discardProperty(String propertyName) {
-        List<Property> propertyList = playedProperties.get(propertyName);
+    public Property discardProperty(String propertyName) {
+        Stack<Property> propertyList = playedProperties.get(propertyName);
         if(!propertyList.isEmpty()) {
-            Property p = propertyList.get(0);
+            Property p = propertyList.pop();
             p.decreasePlayerAttributes();
             p.setOwner(null);
-            propertyList.remove(0);
+            return p;
         }
+        // Player should not choose a non-existing card
+        return null;
     }
     
     public void playProperty(Property property) {

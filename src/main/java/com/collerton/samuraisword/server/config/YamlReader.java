@@ -14,30 +14,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
+package com.collerton.samuraisword.server.config;
 
-import com.collerton.samuraisword.server.model.DeckCard;
-import com.collerton.samuraisword.server.model.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This class models the Daimyo card, which gives the player two extra cards
- * if player plays it or gives him an extra honor point if stil in its hands
  *
  * @author tommasie
  */
-public class Daimyo extends DeckCard{
+public class YamlReader {
     
-    public Daimyo() {
-        super("Daimyo");
+    private List<CardsYamlModel> actions;
+    private List<CardsYamlModel> properties;
+    
+    public YamlReader() {
+        actions = new ArrayList<>();
+        properties = new ArrayList<>();
     }
     
-    @Override
-    public void playInternal() {
-        owner.giveCard(GAME.pickCardFromDeck());
-        owner.giveCard(GAME.pickCardFromDeck());
+    public YamlReader(String s) {
+        this();
     }
 
-    @Override
-    protected void playInternal(Player player) { }
+    public List<CardsYamlModel> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<CardsYamlModel> actions) {
+        this.actions = actions;
+    }
+
+    public List<CardsYamlModel> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<CardsYamlModel> properties) {
+        this.properties = properties;
+    }
+    
     
 }

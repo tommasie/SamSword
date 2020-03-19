@@ -57,7 +57,7 @@ public class GameCharacterTest {
     
     @BeforeEach
     public void setUp() {
-        System.out.println("entro");
+        player = new Player("name");
     }
     
     @AfterEach
@@ -69,7 +69,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testBenkei() {
-        player = new Player("name");
         character = new Benkei();
         player.setCharacter(character);
         assertEquals(1, player.getDistanceBonus());
@@ -87,7 +86,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testChiyome() {
-        player = new Player("name");
         character = new Chiyome();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -105,7 +103,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testGoemon() {
-        player = new Player("name");
         character = new Goemon();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -123,7 +120,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testGinchiyo() {
-        player = new Player("name");
         character = new Ginchiyo();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -141,7 +137,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testHanzo() {
-        player = new Player("name");
         character = new Hanzo();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -159,7 +154,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testHideyoshi() {
-        player = new Player("name");
         character = new Hideyoshi();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -177,7 +171,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testIeyasu() {
-        player = new Player("name");
         character = new Ieyasu();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());
@@ -195,7 +188,6 @@ public class GameCharacterTest {
     @Test
     @DisplayName("╯°□°）╯")
     public void testKojirō() {
-        player = new Player("name");
         character = new Kojiro();
         player.setCharacter(character);
         assertEquals(0, player.getDistanceBonus());

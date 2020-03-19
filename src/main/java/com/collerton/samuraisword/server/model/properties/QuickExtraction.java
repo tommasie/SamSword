@@ -28,7 +28,7 @@ public class QuickExtraction extends Property{
     }
 
     @Override
-    protected void increasePlayerAttributes() {
+    protected void playInternal() {
         owner.increaseAttackBonus();
     }
 

@@ -1,0 +1,28 @@
+## YAML Template.
+---
+actions:
+    -   name: "Battlecry"
+        quantity: 4
+    -   name: "Daimyo"
+        quantity: 3
+    -   name: "Distraction"
+        quantity: 5
+    -   name: "Geisha"
+        quantity: 6
+    -   name: "Meditation"
+        quantity: 3
+    -   name: "Parry"
+        quantity: 15
+    -   name: "TeaCeremony"
+        quantity: 4
+    -   name: "Jujitsu"
+        quantity: 3
+properties:
+    -   name: "Armour"
+        quantity: 4
+    -   name: "Bushido"
+        quantity: 2
+    -   name: "Concentration"
+        quantity: 6
+    -   name: "QuickExtraction"
+        quantity: 3

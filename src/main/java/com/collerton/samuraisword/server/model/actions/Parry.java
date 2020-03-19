@@ -14,36 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.actions;
+package com.collerton.samuraisword.server.model.actions;
 
 import com.collerton.samuraisword.server.model.DeckCard;
 import com.collerton.samuraisword.server.model.Player;
 
 /**
- * This class model the Tea Ceremony card,
- * where the owner picks three cards
- * and the others just one
+ * This class models the Parry card,
+ * used when attacked to defend oneself
  * @author tommasie
  */
-public class TeaCeremony extends DeckCard {
+public class Parry extends DeckCard {
 
-    public TeaCeremony() {
-        super("TeaCeremony");
+    public Parry() {
+        super("Parry");
     }
 
     @Override
     protected void playInternal() {
-        for(int i = 0; i < 3; i++) {
-            owner.giveCard(GAME.pickCardFromDeck());
-        }
-        
-        for(Player p : GAME.getPlayers()) {
-            if (!p.equals(owner)) {
-                p.giveCard(GAME.pickCardFromDeck());
-            }
-        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void playInternal(Player player) { }
+    protected void playInternal(Player player) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

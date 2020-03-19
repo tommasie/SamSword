@@ -14,34 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.config;
+package com.collerton.samuraisword.server.model.actions;
 
 import com.collerton.samuraisword.server.model.DeckCard;
-import com.collerton.samuraisword.server.model.Weapon;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+import com.collerton.samuraisword.server.model.Player;
 
 /**
- * YAML weapon loader
+ * This class models the Daimyo card, which gives the player two extra cards
+ * if player plays it or gives him an extra honor point if stil in its hands
+ *
  * @author tommasie
  */
-public class WeaponLoader {
+public class Daimyo extends DeckCard{
     
-    public List<DeckCard> loadWeapons() {
-        Yaml yaml = new Yaml(new Constructor(Weapon.class));
-        InputStream inputStream = this.getClass()
-          .getClassLoader()
-          .getResourceAsStream("weapons.yml");
-        
-        List<DeckCard> weapons = new ArrayList<>();
-        for (Object object : yaml.loadAll(inputStream)) {
-            Weapon weapon = (Weapon)object;
-            weapons.add(weapon);
-        }
-        return weapons;
+    public Daimyo() {
+        super("Daimyo");
     }
+    
+    @Override
+    public void playInternal() {
+        owner.giveCard(GAME.pickCardFromDeck());
+        owner.giveCard(GAME.pickCardFromDeck());
+    }
+
+    @Override
+    protected void playInternal(Player player) { }
     
 }

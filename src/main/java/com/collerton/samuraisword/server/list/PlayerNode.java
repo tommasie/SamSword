@@ -14,27 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.model.properties;
+package com.collerton.samuraisword.server.list;
+
+import com.collerton.samuraisword.server.model.Player;
 
 /**
- * This class models the Armour property,
- * where the owner receives an +1 distance bonus
+ * Node of the circular linked list of players (and Bushido)
  * @author tommasie
  */
-public class Armour extends Property {
-
-    public Armour() {
-        super("Armour", "description");
-    }
-
-    @Override
-    protected void playInternal() {
-        owner.increaseDistanceBonus();
-    }
-
-    @Override
-    public void decreasePlayerAttributes() {
-        owner.decreaseDistanceBonus();
-    }
+public class PlayerNode {
     
+    private Player mPlayer;
+    private Player mNextPlayer;
+    private Player mPreviousPlayer;
+
+    public PlayerNode(Player mPlayer, Player mNextPlayer, Player mPreviousPlayer) {
+        this.mPlayer = mPlayer;
+        this.mNextPlayer = mNextPlayer;
+        this.mPreviousPlayer = mPreviousPlayer;
+    }
+
+    public Player getPlayer() {
+        return mPlayer;
+    }
+
+    public Player getNextPlayer() {
+        return mNextPlayer;
+    }
+
+    public Player getmPreviousPlayer() {
+        return mPreviousPlayer;
+    }
+
 }
