@@ -36,5 +36,5 @@ public class Concentration extends Property {
     public void decreasePlayerAttributes() {
         owner.decreaseWeaponMultiplier();
     }
-    
+
 }

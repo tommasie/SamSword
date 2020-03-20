@@ -26,11 +26,11 @@ import com.collerton.samuraisword.server.model.Player;
  * @author tommasie
  */
 public class Daimyo extends DeckCard{
-    
+
     public Daimyo() {
         super("Daimyo");
     }
-    
+
     @Override
     public void playInternal() {
         owner.giveCard(GAME.pickCardFromDeck());
@@ -39,5 +39,5 @@ public class Daimyo extends DeckCard{
 
     @Override
     protected void playInternal(Player player) { }
-    
+
 }

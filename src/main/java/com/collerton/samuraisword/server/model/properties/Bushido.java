@@ -38,5 +38,5 @@ public class Bushido extends DeckCard {
     protected void playInternal(Player player) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

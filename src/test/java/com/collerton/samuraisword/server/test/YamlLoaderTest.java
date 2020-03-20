@@ -31,25 +31,25 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author tommasie
  */
 public class YamlLoaderTest {
-    
+
     private YamlLoader cardsLoader;
-    
+
     public YamlLoaderTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
         cardsLoader = new YamlLoader();
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -60,9 +60,9 @@ public class YamlLoaderTest {
         assertEquals(43, cards.size());
         assertTrue(cards.get(0) instanceof DeckCard);
         assertEquals("Battlecry", cards.get(0).getName());
-        
+
     }
-    
+
     @Test
     public void testLoadConcreteProperties() {
         List<DeckCard> cards = cardsLoader.getConcreteProperties();
@@ -70,7 +70,7 @@ public class YamlLoaderTest {
         assertTrue(cards.get(0) instanceof DeckCard);
         assertEquals("Armour", cards.get(0).getName());
     }
-    
+
     @Test
     public void testLoadConcreteWeapons() {
         List<DeckCard> cards = cardsLoader.getConcreteWeapons();

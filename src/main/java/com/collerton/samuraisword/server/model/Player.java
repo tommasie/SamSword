@@ -23,26 +23,27 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 /**
  * This class models the player of the game.
  * Each player has a set of properties defined by the character he is given
  * and by the Property cards he can play throughout the game.
- * 
+ *
  * @author tommasie
  */
 public class Player {
-    
+
     private static final GameSingleton GAME = GameSingleton.getInstance();
-    
+
     // Username, unique for each game
     private final String name;
-    
+
     // Main player points
-    private int honorPoints;
+    private int mHonorPoints;
     private int resistancePoints;
-    
+
     // List of properties affected by the character and Property cards
     private int distanceBonus;
     private int attackBonus;
@@ -53,22 +54,22 @@ public class Player {
     private boolean canPickExtraCard;
     private boolean canPickFromCemetery;
     private boolean ignoresDifficulty;
-    
+
     // Role given at the beginning of the game
     private Role role;
-    
+
     // Character given at the beginning of the game
     private GameCharacter character;
-    
+
     // Cards in the player's hand
     private final List<DeckCard> cards;
-    
+
     // Property cards played the player and shown to everyone
     private Map<String, Stack<Property>> playedProperties;
-    
+
     public Player(String name) {
         this.name = name;
-        this .honorPoints = 0;
+        this .mHonorPoints = 0;
         this.resistancePoints = 0;
         this.attackBonus = 0;
         this.distanceBonus = 0;
@@ -90,7 +91,7 @@ public class Player {
     }
 
     public int getHonorPoints() {
-        return honorPoints;
+        return mHonorPoints;
     }
 
     public int getResistancePoints() {
@@ -112,21 +113,21 @@ public class Player {
     public Role getRole() {
         return role;
     }
-    
+
     public void chooseRole(List<Role> roles) {
         // Ask for a number between 1 and roles.size
         int index = 0;
         setRole(roles.remove(index));
     }
-    
-    private void setRole(Role role) {
+
+    public void setRole(Role role) {
         this.role = role;
     }
 
     public GameCharacter getCharacter() {
         return character;
     }
-    
+
     public void chooseCharacter(List<GameCharacter> characters)
     {
         int index = 0;
@@ -148,120 +149,118 @@ public class Player {
     public Map<String, Stack<Property>> getPlayedProperties() {
         return playedProperties;
     }
-    
+
     public void setHonorPoints(int points) {
-        this.honorPoints = points;
+        this.mHonorPoints = points;
     }
-    
+
     public void increaseHonorPoints() {
-        this.honorPoints += 1;
+        this.mHonorPoints += 1;
     }
-    
+
     public void decreseHonorPoints() {
-        this.honorPoints -= 1;
-        if(this.honorPoints == 0) {
+        this.mHonorPoints -= 1;
+        if(this.mHonorPoints == 0) {
             System.out.println("I am a loser");
             GAME.endGame();
         }
     }
-    
+
     public void resetResistancePoints() {
         this.resistancePoints = character.getResistancePoints();
     }
-    
+
     public void increaseAttackBonus() {
         this.attackBonus += 1;
     }
-    
+
     public void decreaseAttackBonus() {
         this.attackBonus -= 1;
     }
-    
+
     public void increaseDistanceBonus() {
         this.distanceBonus += 1;
     }
-    
+
     public void decreaseDistanceBonus() {
         this.distanceBonus -= 1;
     }
-    
+
     public void increaseWeaponMultiplier() {
         this.weaponMultiplier += 1;
     }
-    
+
     public void decreaseWeaponMultiplier() {
         this.weaponMultiplier -=1;
     }
-    
+
     public boolean getSuffersLessDamage() {
         return this.suffersLessDamage;
     }
-    
+
     public void setSuffersLessDamage() {
         this.suffersLessDamage = true;
     }
-    
+
     public boolean getDamageOnlyFromWeapons() {
         return this.damageOnlyFromWeapons;
     }
-    
+
     public void setDamageOnlyFromWeapons() {
         this.damageOnlyFromWeapons = true;
     }
-    
+
     public boolean canParryWithWeapon() {
-        return this.canParryWithWeapon;
+        return canParryWithWeapon;
     }
-    
+
     public void setCanParryWithWeapon() {
-        this.canParryWithWeapon = true;
+        canParryWithWeapon = true;
     }
-    
+
     public boolean canPickExtraCard() {
-        return this.canPickExtraCard;
+        return canPickExtraCard;
     }
-    
+
     public void setCanPickExtraCard() {
-        this.canPickExtraCard = true;
+        canPickExtraCard = true;
     }
-    
+
     public boolean canPickFromCemetery() {
-        return this.canPickFromCemetery;
+        return canPickFromCemetery;
     }
-    
+
     public void setCanPickFromCemetery() {
-        this.canPickFromCemetery = true;
+        canPickFromCemetery = true;
     }
-    
+
     public boolean ignoresDifficulty() {
-        return this.ignoresDifficulty;
+        return ignoresDifficulty;
     }
-    
+
     public void setIgnoresDifficulty() {
-        this.ignoresDifficulty = true;
+        ignoresDifficulty = true;
     }
-    
+
     public void giveCard(DeckCard card) {
         card.setOwner(this);
-        this.cards.add(card);
+        cards.add(card);
     }
-    
+
     public void removeCardFromHand(int index) {
-        this.cards.remove(index);
+        cards.remove(index);
     }
-    
+
     public void movePropertyToTable(Property property) throws GameException {
-        if (!this.cards.contains(property)) {
+        if (!cards.contains(property)) {
             throw new GameException("This card is not in the player's hand");
         }
-        this.cards.remove(property);
-        this.playedProperties.putIfAbsent(property.getName(), new Stack<>());
+        cards.remove(property);
+        playedProperties.putIfAbsent(property.getName(), new Stack<>());
         Stack<Property> properties = playedProperties.get(property.getName());
-        if(properties == null)
-            System.out.println("mozzarella");
         properties.add(property);
     }
-    
+
     public Property discardProperty(String propertyName) {
         Stack<Property> propertyList = playedProperties.get(propertyName);
         if(!propertyList.isEmpty()) {
@@ -273,7 +272,7 @@ public class Player {
         // Player should not choose a non-existing card
         return null;
     }
-    
+
     public void playProperty(Property property) {
         try {
             movePropertyToTable(property);
@@ -281,33 +280,33 @@ public class Player {
         } catch(GameException e) {
             e.printStackTrace();
         }
-        
-        
+
+
     }
-    
+
     public void discardProperty(Property property) {
         discardProperty(property.getName());
     }
-    
+
     public DeckCard discardCard(int index) {
         return cards.remove(index);
     }
-    
+
     public void discardCard(DeckCard card) {
         cards.remove(card);
         GAME.addCardToCemetery(card);
     }
-    
-    /** 
+
+    /**
      * Check that the player can be attacked or skipped for the distance count
      * @return boolean
      */
     public boolean canPlay() {
         return resistancePoints == 0 || getCards().isEmpty();
     }
-    
+
     public void playJujitsu() {
-        /* Ideally, the user should choose wether to give a weapon or a 
+        /* Ideally, the user should choose wether to give a weapon or a
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
@@ -316,9 +315,9 @@ public class Player {
             System.out.println(name + " is not affected");
         }
     }
-    
+
     public void playBattlecry() {
-        /* Ideally, the user should choose wether to give a parry or a 
+        /* Ideally, the user should choose wether to give a parry or a
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
@@ -327,5 +326,39 @@ public class Player {
             System.out.println(name + " is not affected");
         }
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + Objects.hashCode(this.role);
+        hash = 67 * hash + Objects.hashCode(this.character);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Player other = (Player) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
+            return false;
+        }
+        if (!Objects.equals(this.character, other.character)) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

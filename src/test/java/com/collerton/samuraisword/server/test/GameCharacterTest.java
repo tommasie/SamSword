@@ -39,27 +39,27 @@ import org.junit.jupiter.api.DisplayName;
  * @author tommasie
  */
 public class GameCharacterTest {
-    
+
     Player player;
     GameCharacter character;
-    
+
     public GameCharacterTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
-        
+
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
         player = new Player("name");
     }
-    
+
     @AfterEach
     public void tearDown() {
         character = null;
@@ -82,7 +82,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testChiyome() {
@@ -99,7 +99,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testGoemon() {
@@ -116,7 +116,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testGinchiyo() {
@@ -133,7 +133,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testHanzo() {
@@ -150,7 +150,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testHideyoshi() {
@@ -167,7 +167,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testIeyasu() {
@@ -184,7 +184,7 @@ public class GameCharacterTest {
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
-    
+
     @Test
     @DisplayName("╯°□°）╯")
     public void testKojirō() {
@@ -201,6 +201,6 @@ public class GameCharacterTest {
         assertTrue(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
-    
+
     //TODO finish characters (musachi, nobunaga, tomoe, ushiwaka)
 }

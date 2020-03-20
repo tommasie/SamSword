@@ -36,5 +36,5 @@ public class Armour extends Property {
     public void decreasePlayerAttributes() {
         owner.decreaseDistanceBonus();
     }
-    
+
 }

@@ -36,7 +36,7 @@ public class TeaCeremony extends DeckCard {
         for(int i = 0; i < 3; i++) {
             owner.giveCard(GAME.pickCardFromDeck());
         }
-        
+
         for(Player p : GAME.getPlayers()) {
             if (!p.equals(owner)) {
                 p.giveCard(GAME.pickCardFromDeck());

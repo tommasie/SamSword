@@ -21,15 +21,15 @@ package com.collerton.samuraisword.server.config;
  * @author tommasie
  */
 public class CardsYamlModel {
-    
+
     private String name;
     private int quantity;
-    
+
     public CardsYamlModel() {
         name = "";
         quantity = 0;
     }
-    
+
     public CardsYamlModel(String s) {
         this();
     }
@@ -49,6 +49,6 @@ public class CardsYamlModel {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
-    
+
+
 }

@@ -18,24 +18,24 @@ package com.collerton.samuraisword.server.model;
 
 /**
  * This class models any Weapon card, as they don't have specific traits
- * 
+ *
  * @author tommasie
  */
 public class Weapon extends DeckCard {
-    
+
     private int attackPoints;
     private int difficulty;
-    
+
      public Weapon(String name, int attackPoints, int difficulty) {
         super(name);
         this.attackPoints = attackPoints;
         this.difficulty = difficulty;
     }
-     
+
     public Weapon() {
         this("", 0, 0);
     }
-     
+
     // For the Yaml parser
     public Weapon(String s) {
         this("", 0, 0);
@@ -56,7 +56,7 @@ public class Weapon extends DeckCard {
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
-    
+
     @Override
     protected void playInternal() { }
 
@@ -65,5 +65,5 @@ public class Weapon extends DeckCard {
         //TODO how to handle weapons?
     }
 
-    
+
 }

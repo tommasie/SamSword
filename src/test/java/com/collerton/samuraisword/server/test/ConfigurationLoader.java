@@ -32,22 +32,22 @@ import org.yaml.snakeyaml.constructor.Constructor;
  * @author tommasie
  */
 public class ConfigurationLoader {
-    
+
     public ConfigurationLoader() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @Test
     public void testYAML() {
         Yaml yaml = new Yaml(new Constructor(Role.class));
@@ -63,7 +63,7 @@ public class ConfigurationLoader {
         }
         assertEquals(4,count);
     }
-    
+
     @AfterEach
     public void tearDown() {
     }

@@ -33,28 +33,28 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author tommasie
  */
 public class PropertyTest {
-    
+
     public PropertyTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
 
     @Test
-    public void testArmour() {
+    public void testArmourEffects() {
         Player player = new Player("name");
         Property armour = new Armour();
         armour.setOwner(player);
@@ -63,9 +63,18 @@ public class PropertyTest {
         assertEquals(0, player.getAttackBonus());
         assertEquals(1, player.getWeaponMultiplier());
     }
-    
+
     @Test
-    public void testConcentration() {
+    public void testArmourOnTable() {
+        Player player = new Player("name");
+        Property armour = new Armour();
+        player.giveCard(armour);
+        player.playProperty(armour);
+        assertEquals(1, player.getPlayedProperties().get(armour.getName()).size());
+    }
+
+    @Test
+    public void testConcentrationEffects() {
         Player player = new Player("name");
         Property concentration = new Concentration();
         concentration.setOwner(player);
@@ -74,9 +83,18 @@ public class PropertyTest {
         assertEquals(0, player.getAttackBonus());
         assertEquals(2, player.getWeaponMultiplier());
     }
-    
+
     @Test
-    public void testQuickExtraction() {
+    public void testConcentrationOnTable() {
+        Player player = new Player("name");
+        Property concentration = new Concentration();
+        player.giveCard(concentration);
+        player.playProperty(concentration);
+        assertEquals(1, player.getPlayedProperties().get(concentration.getName()).size());
+    }
+
+    @Test
+    public void testQuickExtractionEffects() {
         Player player = new Player("name");
         Property quickExtraction = new QuickExtraction();
         quickExtraction.setOwner(player);
@@ -84,5 +102,14 @@ public class PropertyTest {
         assertEquals(0, player.getDistanceBonus());
         assertEquals(1, player.getAttackBonus());
         assertEquals(1, player.getWeaponMultiplier());
+    }
+
+    @Test
+    public void testQuickExtractionOnTable() {
+        Player player = new Player("name");
+        Property quickExtraction = new QuickExtraction();
+        player.giveCard(quickExtraction);
+        player.playProperty(quickExtraction);
+        assertEquals(1, player.getPlayedProperties().get(quickExtraction.getName()).size());
     }
 }

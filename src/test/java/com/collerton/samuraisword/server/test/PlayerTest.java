@@ -33,26 +33,26 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author tommasie
  */
 public class PlayerTest {
-    
+
     public PlayerTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
-    
+
     @Test
     public void testCardsInHand() {
         Player player = new Player("name");
@@ -60,12 +60,12 @@ public class PlayerTest {
         player.giveCard(card);
         assertEquals(1, player.getCards().size());
     }
-    
+
     @Test
     public void testPlayProperty() {
         Player player = new Player("name");
         Property armour = new Armour();
-        
+
         player.giveCard(armour);
         assertEquals(1, player.getCards().size());
         assertEquals(0, player.getPlayedProperties().keySet().size());
@@ -75,7 +75,7 @@ public class PlayerTest {
         assertEquals(1, player.getPlayedProperties().get("Armour").size());
         assertEquals(1, player.getDistanceBonus());
     }
-    
+
     @Test
     public void testDiscardProperty() {
         Player player = new Player("name");

@@ -36,5 +36,5 @@ public class QuickExtraction extends Property{
     public void decreasePlayerAttributes() {
         owner.decreaseAttackBonus();
     }
-    
+
 }

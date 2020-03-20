@@ -40,7 +40,8 @@ public class Role {
         this.honorMultiplier = 0;
     }
     public Role(String s) {
-        this();
+        this.name = s;
+        this.honorMultiplier = 0;
     }
 
     public Role(String name, int honorMultiplier) {

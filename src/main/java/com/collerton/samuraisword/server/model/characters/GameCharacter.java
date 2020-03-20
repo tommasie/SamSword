@@ -23,7 +23,7 @@ import com.collerton.samuraisword.server.model.Player;
  * @author tommasie
  */
 public abstract class GameCharacter {
-    
+
     private String name;
     private int resistancePoints;
     protected Player owner;
@@ -37,11 +37,11 @@ public abstract class GameCharacter {
     public int getResistancePoints() {
         return resistancePoints;
     }
-    
+
     public void setOwner(Player player) {
         this.owner = player;
     }
-    
+
     public abstract void play();
-            
+
 }

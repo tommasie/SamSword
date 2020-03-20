@@ -30,31 +30,31 @@ import org.yaml.snakeyaml.constructor.Constructor;
  * @author tommasie
  */
 public class ConfigFactory {
-    
+
     private static ConfigFactory instance;
-    
+
     private int numPlayers;
     private String configPath;
     private static String weaponsFilePath = "weapons.yml";
-    
+
     private List<Role> roles;
-    
+
     private ConfigFactory(int numPlayers) {
         this.numPlayers = numPlayers;
         this.configPath = "config" + numPlayers + ".yml";
         roles = new ArrayList<>();
     }
-    
+
     public static synchronized ConfigFactory getInstance(int numPlayers) {
         if(instance == null || instance.numPlayers != numPlayers)
             instance = new ConfigFactory(numPlayers);
-        
+
         return instance;
     }
-    
+
     private void parseConfiguration()
     {
-        
+
         Yaml yaml = new Yaml(new Constructor(Role.class));
         InputStream inputStream = this.getClass()
           .getClassLoader()
@@ -65,11 +65,11 @@ public class ConfigFactory {
             roles.add(role);
         }
     }
-    
+
     public List<Role> getRoles()
     {
         parseConfiguration();
         return roles;
     }
- 
+
 }

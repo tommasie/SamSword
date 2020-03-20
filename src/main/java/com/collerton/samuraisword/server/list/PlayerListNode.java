@@ -19,31 +19,39 @@ package com.collerton.samuraisword.server.list;
 import com.collerton.samuraisword.server.model.Player;
 
 /**
- * Node of the circular linked list of players (and Bushido)
+ * Node of the circular double-linked list of players (and Bushido)
  * @author tommasie
  */
-public class PlayerNode {
-    
-    private Player mPlayer;
-    private Player mNextPlayer;
-    private Player mPreviousPlayer;
+public class PlayerListNode {
 
-    public PlayerNode(Player mPlayer, Player mNextPlayer, Player mPreviousPlayer) {
-        this.mPlayer = mPlayer;
-        this.mNextPlayer = mNextPlayer;
-        this.mPreviousPlayer = mPreviousPlayer;
+    private final Player player;
+    private PlayerListNode next;
+    private PlayerListNode previous;
+
+    public PlayerListNode(Player player) {
+        this.player = player;
+        this.next = null;
+        this.previous = null;
     }
 
     public Player getPlayer() {
-        return mPlayer;
+        return player;
     }
 
-    public Player getNextPlayer() {
-        return mNextPlayer;
+    public PlayerListNode getNext() {
+        return next;
     }
 
-    public Player getmPreviousPlayer() {
-        return mPreviousPlayer;
+    public void setNext(PlayerListNode nextPlayer) {
+        this.next = nextPlayer;
+    }
+
+    public PlayerListNode getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(PlayerListNode previousPlayer) {
+        this.previous = previousPlayer;
     }
 
 }

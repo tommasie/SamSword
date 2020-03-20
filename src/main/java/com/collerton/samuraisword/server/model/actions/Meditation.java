@@ -29,7 +29,7 @@ public class Meditation extends DeckCard {
     public Meditation() {
         super("Respiration");
     }
-    
+
     public void play(Player player, Player beneficiario) {
         player.resetResistancePoints();
         beneficiario.giveCard(GAME.pickCardFromDeck());
@@ -43,5 +43,5 @@ public class Meditation extends DeckCard {
         owner.resetResistancePoints();
         player.giveCard(GAME.pickCardFromDeck());
     }
-    
+
 }

@@ -19,13 +19,13 @@ package com.collerton.samuraisword.server.model;
 /**
  * Abstract parent class for all the cards that can be taken from the deck
  * (weapons, actions, properties)
- * 
+ *
  * @author tommasie
  */
 public abstract class DeckCard {
-    
+
     protected static final GameSingleton GAME = GameSingleton.getInstance();
-    
+
     private String name;
     protected Player owner;
 
@@ -41,11 +41,11 @@ public abstract class DeckCard {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public void setOwner(Player player) {
         this.owner = player;
     }
-    
+
     /**
      * Called by cards that have effects on zero or all other players
      */
@@ -58,9 +58,9 @@ public abstract class DeckCard {
             System.out.println("Card should have an owner before it's played");
         }
     }
-    
+
     protected abstract void playInternal();
-    
+
     /**
      * Called by cards that have effect on one player
      * @param player Player who is affected by this card
@@ -74,11 +74,11 @@ public abstract class DeckCard {
             System.out.println("Card should have an owner before it's played");
         }
     }
-    
+
     protected abstract void playInternal(Player player);
-    
+
     private void discard() {
         owner.discardCard(this);
     }
-    
+
 }

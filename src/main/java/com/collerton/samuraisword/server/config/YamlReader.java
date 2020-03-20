@@ -24,15 +24,15 @@ import java.util.List;
  * @author tommasie
  */
 public class YamlReader {
-    
+
     private List<CardsYamlModel> actions;
     private List<CardsYamlModel> properties;
-    
+
     public YamlReader() {
         actions = new ArrayList<>();
         properties = new ArrayList<>();
     }
-    
+
     public YamlReader(String s) {
         this();
     }
@@ -52,6 +52,6 @@ public class YamlReader {
     public void setProperties(List<CardsYamlModel> properties) {
         this.properties = properties;
     }
-    
-    
+
+
 }

@@ -16,8 +16,6 @@
  */
 package com.collerton.samuraisword.server.model.characters;
 
-import com.collerton.samuraisword.server.model.Player;
-
 /**
  *
  * @author tommasie
@@ -32,5 +30,5 @@ public class Ieyasu extends GameCharacter{
     public void play() {
         owner.setCanPickFromCemetery();
     }
-    
+
 }

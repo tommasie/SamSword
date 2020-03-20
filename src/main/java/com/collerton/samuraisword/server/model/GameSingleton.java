@@ -19,164 +19,185 @@ package com.collerton.samuraisword.server.model;
 import com.collerton.samuraisword.server.model.characters.GameCharacter;
 import com.collerton.samuraisword.server.config.ConfigFactory;
 import com.collerton.samuraisword.server.config.YamlLoader;
-import com.collerton.samuraisword.server.list.PlayerNode;
+import com.collerton.samuraisword.server.list.PlayerListNode;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
  * This class is the main game class that handles the game execution,
  * as well as game stuff like the card deck and card cemetery.
- * 
+ *
  * @author tommasie
  */
 public class GameSingleton {
-    
+
     private static GameSingleton instance;
-    
-    private int mNumberPlayers;
-    
-    private final List<Player> mPlayers;
-    
-    private PlayerNode mPlayersRoundHead;
-    
-    private final Stack<DeckCard> mDeck;
-    
-    private final Stack<DeckCard> mCemetery;
-    
+
+    private int numberPlayers;
+
+    private final Set<Player> players;
+
+    private PlayerListNode currentPlayer;
+
+    private final Stack<DeckCard> deck;
+
+    private final Stack<DeckCard> cemetery;
+
     private GameSingleton() {
-        this.mNumberPlayers = 0;
-        this.mPlayers = new ArrayList<>();
-        this.mPlayersRoundHead = null;
-        this.mDeck = new Stack<>();
-        this.mCemetery = new Stack<>();
+        this.numberPlayers = 0;
+        this.players = new HashSet<>();
+        this.currentPlayer = null;
+        this.deck = new Stack<>();
+        this.cemetery = new Stack<>();
     }
-    
+
     public static synchronized GameSingleton getInstance() {
         if(instance == null)
             instance = new GameSingleton();
         return instance;
     }
-    
+
     public void newGame(int players) {
-        this.mNumberPlayers = players;
-        
+        this.numberPlayers = players;
+
     }
-    
+
     //To be called when user logs in
     public void addPlayer(Player player) {
-        this.mPlayers.add(player);
+        this.players.add(player);
     }
-    
-    public List<Player> getPlayers() {
-        return this.mPlayers;
+
+    public Set<Player> getPlayers() {
+        return this.players;
     }
-    
+
     public void startGame() {
         giveRoles();
         giveCharacters();
         distributeCards();
     }
-    
+
     private void giveRoles() {
         ConfigFactory factory = ConfigFactory.getInstance(4);
         List<Role> roles = factory.getRoles();
         Collections.shuffle(roles);
 
-        for(Player player : mPlayers) {
+        for(Player player : players) {
             player.chooseRole(roles);
         }
     }
-    
+
     private void giveCharacters() {
         List<GameCharacter> characters = new ArrayList<>();
         Collections.shuffle(characters);
-        
-        for(Player player : mPlayers) {
+
+        for(Player player : players) {
             player.chooseCharacter(characters);
         }
     }
-    
+
+    public void initDeck() {
+        YamlLoader cardsLoader = new YamlLoader();
+        deck.addAll(cardsLoader.getConcreteWeapons());
+        deck.addAll(cardsLoader.getConcreteActions());
+        deck.addAll(cardsLoader.getConcreteProperties());
+    }
+
     private void distributeCards() {
         YamlLoader cardsLoader = new YamlLoader();
-        mDeck.addAll(cardsLoader.getConcreteWeapons());
-        mDeck.addAll(cardsLoader.getConcreteActions());
-        mDeck.addAll(cardsLoader.getConcreteProperties());
-        
-        Iterator<Player> it;
-        it = mPlayers.iterator();
-        
-        for (Player p : mPlayers) {
-            //int cards = 
-        }
+        deck.addAll(cardsLoader.getConcreteWeapons());
+        deck.addAll(cardsLoader.getConcreteActions());
+        deck.addAll(cardsLoader.getConcreteProperties());
+
+        //initRound();
+
     }
-    /*
-    private void setUpRound() {
-        // TOD use deque
-        int idx = 0, idxPrev = 0, idxNext = 0;
-        for(int i = 0; i < mPlayers.size(); i++) {
-            if(mPlayers.get(i).getRole().getName().equals("Shogun")) {
-                idx = i;
-                break;
+
+    public void initRound() {
+        PlayerListNode head = null, curr, prev = null;
+        for (Player p : players) {
+            curr = new PlayerListNode(p);
+            if(head == null)
+                head = curr;
+            if (prev != null) {
+                prev.setNext(curr);
+                curr.setPrevious(prev);
+            }
+            prev = curr;
+        }
+
+        if (head != null && prev != null) {
+            prev.setNext(head);
+            head.setPrevious(prev);
+            currentPlayer = head;
+        }
+
+        setShogunFirst();
+    }
+
+    private void setShogunFirst() {
+        boolean shogunFound = false;
+        PlayerListNode iter = currentPlayer;
+        while(!shogunFound) {
+            if(iter.getPlayer().getRole().getName().equals("Shogun"))
+                shogunFound = true;
+            else {
+                iter = iter.getNext();
             }
         }
-        if(idx == 0) {
-            idxPrev = mPlayers.size() - 1;
-            idxNext = idx + 1;
-        } else if (idx == mPlayers.size() - 1) {
-            idxPrev = idx - 1;
-            idxNext = 0;
-        } else {
-            idxPrev = idx - 1;
-            idxNext = idx + 1;
-        }
-        mPlayersRoundHead = new PlayerNode(mPlayers.get(idx), mPlayers.get(idxNext), mPlayers.get(idxPrev));
-        idxPrev = idx;
-        idx = idxNext;
-        idxNext = (idxNext == mPlayers.size() - 1) ? 0 : idxNext + 1;
+        currentPlayer = iter;
     }
-    */
-    
+
+    public Player getCurrentPlayer() {
+        return currentPlayer.getPlayer();
+    }
+
+    public void nextRound() {
+        currentPlayer = currentPlayer.getNext();
+    }
+
     public DeckCard pickCardFromDeck() {
-        if(mDeck.isEmpty()) {
+        if(deck.isEmpty()) {
             resetDeck();
         }
-        return mDeck.pop();     
+        return deck.pop();
     }
-    
+
     private void resetDeck() {
-        mDeck.addAll(mCemetery);
-        Collections.shuffle(mDeck);
-        mCemetery.clear();
-        
+        deck.addAll(cemetery);
+        Collections.shuffle(deck);
+        cemetery.clear();
+
         // All players must give 1 honor point
-        for (Player p : mPlayers) {
+        for (Player p : players) {
             p.decreseHonorPoints();
         }
     }
-    
+
     public void addCardToCemetery(DeckCard card) {
-        this.mCemetery.push(card);
+        this.cemetery.push(card);
     }
-    
+
     public DeckCard pickTopOfCemetery() {
-        if(!this.mCemetery.isEmpty()) {
-            return this.mCemetery.pop();
+        if(!this.cemetery.isEmpty()) {
+            return this.cemetery.pop();
         }
         return null;
     }
-    
+
     public DeckCard checkTopOfCemetery() {
-        if(this.mCemetery.isEmpty())
-            return this.mCemetery.peek();
+        if(this.cemetery.isEmpty())
+            return this.cemetery.peek();
         return null;
     }
-    
+
     public void endGame() {
         StringBuilder sb = new StringBuilder();
-        for(Player p : mPlayers) {
+        for(Player p : players) {
             // Check if player has the Daimyo
             for (DeckCard card : p.getCards()) {
                 if(card.getName().equals("Daimyo")) {
@@ -192,7 +213,19 @@ public class GameSingleton {
             sb.setLength(0);
         }
     }
-    
-    
-    
+
+    public void removePlayers() {
+        players.clear();
+        // Garbage collector should de-allocate the list if head is set to null
+        currentPlayer = null;
+    }
+
+    public void clearAll() {
+        removePlayers();
+        deck.clear();
+        cemetery.clear();
+    }
+
+
+
 }

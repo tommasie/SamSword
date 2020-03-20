@@ -40,17 +40,17 @@ import org.yaml.snakeyaml.constructor.Constructor;
  * @author tommasie
  */
 public abstract class GameConfig {
-    
+
     protected String path;
-    
+
     private List<Role> roles;
-    
+
     public GameConfig(String path) {
         this.path = path;
     }
-    
+
     public abstract List<Role> loadRoles();
-    
+
     public List<GameCharacter> loadCharacters() {
         List<GameCharacter> characters = new ArrayList<>();
         characters.add(new Benkei());
@@ -61,27 +61,27 @@ public abstract class GameConfig {
         characters.add(new Hideyoshi());
         characters.add(new Ieyasu());
         characters.add(new Kojiro());
-        
+
         return characters;
     }
-    
+
     public List<DeckCard> loadCards() {
         List<DeckCard> cards = new Stack<>();
         // Add the Weapons
         cards.addAll(new WeaponLoader().loadWeapons());
         // Add the Actions
-        
+
         //Add the Properties
-        
+
         return cards;
     }
-    
+
     private List<Weapon> loadWeapons() {
         Yaml yaml = new Yaml(new Constructor(Weapon.class));
         InputStream inputStream = this.getClass()
           .getClassLoader()
           .getResourceAsStream("weapons.yml");
-        
+
         List<Weapon> weapons = new ArrayList<>();
         for (Object object : yaml.loadAll(inputStream)) {
             Weapon weapon = (Weapon)object;
@@ -89,6 +89,6 @@ public abstract class GameConfig {
         }
         return weapons;
     }
-    
-    
+
+
 }

@@ -28,23 +28,23 @@ import org.yaml.snakeyaml.constructor.Constructor;
  * @author tommasie
  */
 public class YamlLoader {
-    
+
     private YamlReader reader;
-    
+
     public YamlLoader() {
         loadProperties();
     }
-    
+
     private void loadProperties() {
         Yaml yaml = new Yaml(new Constructor(YamlReader.class));
         InputStream inputStream = this.getClass()
           .getClassLoader()
           .getResourceAsStream("properties.yml");
-        
+
         reader = yaml.load(inputStream);
     }
-    
-       
+
+
     public List<DeckCard> getConcreteActions() {
         List<DeckCard> cards = new ArrayList<>();
         try {
@@ -56,13 +56,13 @@ public class YamlLoader {
                     cards.add(card);
                 }
             }
-            
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return cards;
     }
-    
+
     public List<DeckCard> getConcreteProperties() {
         List<DeckCard> cards = new ArrayList<>();
         try {
@@ -74,17 +74,17 @@ public class YamlLoader {
                     cards.add(card);
                 }
             }
-            
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return cards;
     }
-    
+
     public List<DeckCard> getConcreteWeapons() {
         WeaponLoader weaponsLoader = new WeaponLoader();
         List<DeckCard> cards = weaponsLoader.loadWeapons();
-        
+
         return cards;
     }
 }

@@ -31,22 +31,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author tommasie
  */
 public class ConfigFactoryTest {
-    
+
     public ConfigFactoryTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -56,7 +56,7 @@ public class ConfigFactoryTest {
     //
     // @Test
     // public void hello() {}
-    
+
     @Test
     public void testCheckLoadedFourRoles() {
         ConfigFactory factory = ConfigFactory.getInstance(4);
@@ -71,7 +71,7 @@ public class ConfigFactoryTest {
         assertEquals("Ninja", roles.get(3).getName());
         assertEquals(2, roles.get(3).getHonorMultiplier());
     }
-    
+
     @Test
     public void testCheckLoadedFiveRoles() {
         ConfigFactory factory = ConfigFactory.getInstance(5);
@@ -88,7 +88,7 @@ public class ConfigFactoryTest {
         assertEquals("Ronin", roles.get(4).getName());
         assertEquals(2, roles.get(4).getHonorMultiplier());
     }
-    
+
      @Test
     public void testCheckLoadedSixRoles() {
         ConfigFactory factory = ConfigFactory.getInstance(6);
