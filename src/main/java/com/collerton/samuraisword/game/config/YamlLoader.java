@@ -48,7 +48,7 @@ public class YamlLoader {
     public List<DeckCard> getConcreteActions() {
         List<DeckCard> cards = new ArrayList<>();
         try {
-            String pkg = "com.collerton.samuraisword.server.model.actions.";
+            String pkg = "com.collerton.samuraisword.game.model.actions.";
             for(CardsYamlModel act : reader.getActions()) {
                 for(int i = 0; i < act.getQuantity(); i++) {
                     Object o = Class.forName(pkg + act.getName()).newInstance();
@@ -66,7 +66,7 @@ public class YamlLoader {
     public List<DeckCard> getConcreteProperties() {
         List<DeckCard> cards = new ArrayList<>();
         try {
-            String pkg = "com.collerton.samuraisword.server.model.properties.";
+            String pkg = "com.collerton.samuraisword.game.model.properties.";
             for(CardsYamlModel prop : reader.getProperties()) {
                 for(int i = 0; i < prop.getQuantity(); i++) {
                     Object o = Class.forName(pkg + prop.getName()).newInstance();
