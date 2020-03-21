@@ -158,7 +158,7 @@ public class Player {
         this.mHonorPoints += 1;
     }
 
-    public void decreseHonorPoints() {
+    public void decreaseHonorPoints() {
         this.mHonorPoints -= 1;
         if(this.mHonorPoints == 0) {
             System.out.println("I am a loser");

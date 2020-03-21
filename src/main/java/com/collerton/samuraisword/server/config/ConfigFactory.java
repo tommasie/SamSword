@@ -35,7 +35,6 @@ public class ConfigFactory {
 
     private int numPlayers;
     private String configPath;
-    private static String weaponsFilePath = "weapons.yml";
 
     private List<Role> roles;
 

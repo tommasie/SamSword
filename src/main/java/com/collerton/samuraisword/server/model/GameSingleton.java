@@ -37,6 +37,8 @@ public class GameSingleton {
 
     private static GameSingleton instance;
 
+    private YamlLoader configLoader;
+
     private int numberPlayers;
 
     private final Set<Player> players;
@@ -76,13 +78,14 @@ public class GameSingleton {
     }
 
     public void startGame() {
+        configLoader = new YamlLoader();
         giveRoles();
         giveCharacters();
-        distributeCards();
+        initDeck();
     }
 
     private void giveRoles() {
-        ConfigFactory factory = ConfigFactory.getInstance(4);
+        ConfigFactory factory = ConfigFactory.getInstance(players.size());
         List<Role> roles = factory.getRoles();
         Collections.shuffle(roles);
 
@@ -105,16 +108,6 @@ public class GameSingleton {
         deck.addAll(cardsLoader.getConcreteWeapons());
         deck.addAll(cardsLoader.getConcreteActions());
         deck.addAll(cardsLoader.getConcreteProperties());
-    }
-
-    private void distributeCards() {
-        YamlLoader cardsLoader = new YamlLoader();
-        deck.addAll(cardsLoader.getConcreteWeapons());
-        deck.addAll(cardsLoader.getConcreteActions());
-        deck.addAll(cardsLoader.getConcreteProperties());
-
-        //initRound();
-
     }
 
     public void initRound() {
@@ -152,6 +145,29 @@ public class GameSingleton {
         currentPlayer = iter;
     }
 
+    public void distributeCards() {
+        // Assumption: first player in the list is the Shogun
+        PlayerListNode iter = currentPlayer;
+        int[] cardsPerPlayer = new int[]{4,5,5,6,6,7,7};
+        int i = 0;
+        while(iter.getPlayer().getCards().isEmpty()) {
+            for(int j = 0; j < cardsPerPlayer[i]; j++) {
+                iter.getPlayer().giveCard(deck.pop());
+            }
+            iter = iter.getNext();
+            i++;
+        }
+    }
+
+    public void distributeHonorPoints() {
+        int honorPoints = (players.size() < 6) ? 4 : 3;
+        for (Player p : players) {
+            if (p.getRole().getName().equals("Shogun"))
+                p.setHonorPoints(5);
+            else p.setHonorPoints(honorPoints);
+        }
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer.getPlayer();
     }
@@ -174,7 +190,7 @@ public class GameSingleton {
 
         // All players must give 1 honor point
         for (Player p : players) {
-            p.decreseHonorPoints();
+            p.decreaseHonorPoints();
         }
     }
 
@@ -215,6 +231,10 @@ public class GameSingleton {
     }
 
     public void removePlayers() {
+        for (Player p : players) {
+            deck.addAll(p.getCards());
+            p.getCards().clear();
+        }
         players.clear();
         // Garbage collector should de-allocate the list if head is set to null
         currentPlayer = null;
@@ -226,6 +246,12 @@ public class GameSingleton {
         cemetery.clear();
     }
 
-
+    public void printGameState() {
+        System.out.printf("Current deck size: %d\n", deck.size());
+        System.out.printf("Current cemetery size: %d\n", cemetery.size());
+        System.out.printf("Current player: %s\n", currentPlayer.getPlayer().getName());
+        System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
+        System.out.printf("Next player: %s\n", currentPlayer.getPrevious().getPlayer().getName());
+    }
 
 }

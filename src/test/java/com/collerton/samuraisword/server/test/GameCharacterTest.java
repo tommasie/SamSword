@@ -26,6 +26,7 @@ import com.collerton.samuraisword.server.model.characters.Hanzo;
 import com.collerton.samuraisword.server.model.characters.Hideyoshi;
 import com.collerton.samuraisword.server.model.characters.Ieyasu;
 import com.collerton.samuraisword.server.model.characters.Kojiro;
+import com.collerton.samuraisword.server.model.characters.Musachi;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -199,6 +200,23 @@ public class GameCharacterTest {
         assertFalse(player.canPickExtraCard());
         assertFalse(player.canPickFromCemetery());
         assertTrue(player.ignoresDifficulty());
+        assertEquals(5, player.getResistancePoints());
+    }
+
+    @Test
+    @DisplayName("╯°□°）╯")
+    public void testMusachi() {
+        character = new Musachi();
+        player.setCharacter(character);
+        assertEquals(0, player.getDistanceBonus());
+        assertEquals(1, player.getAttackBonus());
+        assertEquals(0, player.getHonorPoints());
+        assertEquals(1, player.getWeaponMultiplier());
+        assertFalse(player.getSuffersLessDamage());
+        assertFalse(player.canParryWithWeapon());
+        assertFalse(player.canPickExtraCard());
+        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
 
