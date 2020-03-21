@@ -16,11 +16,11 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.model.DeckCard;
-import com.collerton.samuraisword.server.model.Player;
-import com.collerton.samuraisword.server.model.Weapon;
-import com.collerton.samuraisword.server.model.properties.Armour;
-import com.collerton.samuraisword.server.model.properties.Property;
+import com.collerton.samuraisword.game.model.DeckCard;
+import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.game.model.Weapon;
+import com.collerton.samuraisword.game.model.properties.Armour;
+import com.collerton.samuraisword.game.model.properties.Property;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;

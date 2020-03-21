@@ -16,17 +16,17 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.model.characters.GameCharacter;
-import com.collerton.samuraisword.server.model.Player;
-import com.collerton.samuraisword.server.model.characters.Benkei;
-import com.collerton.samuraisword.server.model.characters.Chiyome;
-import com.collerton.samuraisword.server.model.characters.Ginchiyo;
-import com.collerton.samuraisword.server.model.characters.Goemon;
-import com.collerton.samuraisword.server.model.characters.Hanzo;
-import com.collerton.samuraisword.server.model.characters.Hideyoshi;
-import com.collerton.samuraisword.server.model.characters.Ieyasu;
-import com.collerton.samuraisword.server.model.characters.Kojiro;
-import com.collerton.samuraisword.server.model.characters.Musachi;
+import com.collerton.samuraisword.game.model.characters.GameCharacter;
+import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.game.model.characters.Benkei;
+import com.collerton.samuraisword.game.model.characters.Chiyome;
+import com.collerton.samuraisword.game.model.characters.Ginchiyo;
+import com.collerton.samuraisword.game.model.characters.Goemon;
+import com.collerton.samuraisword.game.model.characters.Hanzo;
+import com.collerton.samuraisword.game.model.characters.Hideyoshi;
+import com.collerton.samuraisword.game.model.characters.Ieyasu;
+import com.collerton.samuraisword.game.model.characters.Kojiro;
+import com.collerton.samuraisword.game.model.characters.Musachi;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;

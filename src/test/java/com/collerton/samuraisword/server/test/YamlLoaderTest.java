@@ -16,8 +16,8 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.config.YamlLoader;
-import com.collerton.samuraisword.server.model.DeckCard;
+import com.collerton.samuraisword.game.config.YamlLoader;
+import com.collerton.samuraisword.game.model.DeckCard;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

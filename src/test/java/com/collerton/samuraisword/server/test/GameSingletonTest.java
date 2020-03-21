@@ -5,9 +5,9 @@
  */
 package com.collerton.samuraisword.server.test;
 
-import com.collerton.samuraisword.server.model.GameSingleton;
-import com.collerton.samuraisword.server.model.Player;
-import com.collerton.samuraisword.server.model.Role;
+import com.collerton.samuraisword.game.model.GameSingleton;
+import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.game.model.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

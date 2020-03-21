@@ -14,63 +14,61 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.test;
+package com.collerton.samuraisword.game.config;
 
 import com.collerton.samuraisword.game.model.Role;
 import java.io.InputStream;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 /**
+ * First attempt at a YAML config loader
+ * Given the number of players, the factory chooses the appropriate game config
  *
  * @author tommasie
  */
-public class ConfigurationLoader {
+public class ConfigFactory {
 
-    public ConfigurationLoader() {
+    private static ConfigFactory instance;
+
+    private int numPlayers;
+    private String configPath;
+
+    private List<Role> roles;
+
+    private ConfigFactory(int numPlayers) {
+        this.numPlayers = numPlayers;
+        this.configPath = "config" + numPlayers + ".yml";
+        roles = new ArrayList<>();
     }
 
-    @BeforeAll
-    public static void setUpClass() {
+    public static synchronized ConfigFactory getInstance(int numPlayers) {
+        if(instance == null || instance.numPlayers != numPlayers)
+            instance = new ConfigFactory(numPlayers);
+
+        return instance;
     }
 
-    @AfterAll
-    public static void tearDownClass() {
-    }
+    private void parseConfiguration()
+    {
 
-    @BeforeEach
-    public void setUp() {
-    }
-
-    @Test
-    public void testYAML() {
         Yaml yaml = new Yaml(new Constructor(Role.class));
         InputStream inputStream = this.getClass()
           .getClassLoader()
-          .getResourceAsStream("config4.yml");
+          .getResourceAsStream(configPath);
 
-        int count = 0;
         for (Object object : yaml.loadAll(inputStream)) {
-            Role r = (Role)object;
-            count++;
-            assertTrue(object instanceof Role);
+            Role role = (Role)object;
+            roles.add(role);
         }
-        assertEquals(4,count);
     }
 
-    @AfterEach
-    public void tearDown() {
+    public List<Role> getRoles()
+    {
+        parseConfiguration();
+        return roles;
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }
