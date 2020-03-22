@@ -11,9 +11,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -33,10 +33,10 @@ public class Server extends Thread {
     ServerSocket socket;
 
     /**
-     * This executor service has 10 threads.
-     * So it means your server can process max 10 concurrent requests.
+     * This executor service has MAX_CONNECTIONS threads.
+     * So it means your server can process max MAX_CONNECTIONS concurrent requests.
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(MAX_CONNECTIONS);
 
     public Server(String host, int port) {
         this.host = host;
@@ -88,9 +88,9 @@ class ServiceRequest implements Runnable {
             CommandFactory commandFactory = CommandFactory.getInstance();
             String line = reader.readLine();
             System.out.println(line);
-            Deque<String> commandLineQueue = new ArrayDeque<>();
+            Queue<String> commandLineQueue = new LinkedList<>();
             Arrays.stream(line.split(" ")).forEachOrdered(item -> {commandLineQueue.add(item);});
-            Command command = commandFactory.getCommand(commandLineQueue.removeFirst());
+            Command command = commandFactory.getCommand(commandLineQueue.remove());
             if (command != null) {
                 boolean loginStatus = command.execute(socket, commandLineQueue);
                 if(loginStatus)

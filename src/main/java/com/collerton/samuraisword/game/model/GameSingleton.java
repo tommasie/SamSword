@@ -232,26 +232,39 @@ public class GameSingleton {
 
     public void removePlayers() {
         for (Player p : players) {
+            // Remove cards form player's hand
             deck.addAll(p.getCards());
             p.getCards().clear();
+            // Remove properties from player's table
+            for(String property : p.getPlayedProperties().keySet()) {
+                deck.addAll(p.getPlayedProperties().remove(property));
+            }
+            p.getPlayedProperties().clear();
+
+            p.removeRole();
+            p.removeCharacter();
         }
         players.clear();
         // Garbage collector should de-allocate the list if head is set to null
         currentPlayer = null;
     }
 
-    public void clearAll() {
+    public void reset() {
         removePlayers();
-        deck.clear();
+        deck.addAll(cemetery);
         cemetery.clear();
+        //deck.clear();
+        //cemetery.clear();
     }
 
     public void printGameState() {
         System.out.printf("Current deck size: %d\n", deck.size());
         System.out.printf("Current cemetery size: %d\n", cemetery.size());
-        System.out.printf("Current player: %s\n", currentPlayer.getPlayer().getName());
-        System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
-        System.out.printf("Next player: %s\n", currentPlayer.getPrevious().getPlayer().getName());
+        if(currentPlayer != null) {
+            System.out.printf("Current player: %s\n", currentPlayer.getPlayer().getName());
+            System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
+            System.out.printf("Next player: %s\n", currentPlayer.getPrevious().getPlayer().getName());
+        }
     }
 
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Deque;
+import java.util.Queue;
 
 /**
  *
@@ -34,11 +34,11 @@ public class Login extends Command {
     }
 
     @Override
-    public boolean execute(Socket socket, Deque<String> params) throws IOException {
+    public boolean execute(Socket socket, Queue<String> params) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter writer = new PrintWriter(socket.getOutputStream());
         boolean status;
-        String user = params.removeFirst();
+        String user = params.remove();
         if (LoginFacade.checkUserConnected(user)) {
             writer.print("User already existing, bye!");
             writer.flush();

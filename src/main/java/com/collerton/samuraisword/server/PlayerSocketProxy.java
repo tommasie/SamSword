@@ -16,22 +16,10 @@
  */
 package com.collerton.samuraisword.server;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.util.Queue;
-
 /**
  *
  * @author tommasie
  */
-public abstract class Command {
-
-    private String name;
-
-    public Command(String name) {
-        this.name = name;
-    }
-
-    public abstract boolean execute(Socket socket, Queue<String> params) throws IOException;
+public class PlayerSocketProxy {
 
 }

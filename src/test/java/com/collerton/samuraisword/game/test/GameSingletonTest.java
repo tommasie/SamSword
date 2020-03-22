@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.collerton.samuraisword.server.test;
+package com.collerton.samuraisword.game.test;
 
 import com.collerton.samuraisword.game.model.GameSingleton;
 import com.collerton.samuraisword.game.model.Player;
@@ -44,8 +44,7 @@ public class GameSingletonTest {
 
     @AfterEach
     public void tearDown() {
-        GAME.removePlayers();
-
+        GAME.reset();
     }
 
     /**
@@ -187,7 +186,6 @@ public class GameSingletonTest {
     }
 
     // TODO check why this test fail (need to decouple some stuff from the game?)
-    @Disabled
     @Test
     public void testDistributedCards6Players() {
         Player p1 = new Player("p1");
@@ -208,11 +206,11 @@ public class GameSingletonTest {
         GAME.addPlayer(p4);
         Player p5 = new Player("p5");
         Role r5 = new Role("Ronin");
-        p4.setRole(r5);
+        p5.setRole(r5);
         GAME.addPlayer(p5);
         Player p6 = new Player("p6");
         Role r6 = new Role("Ninja");
-        p4.setRole(r6);
+        p6.setRole(r6);
         GAME.addPlayer(p6);
 
         GAME.printGameState();

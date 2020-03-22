@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server.test;
+package com.collerton.samuraisword.game.test;
 
 import com.collerton.samuraisword.game.model.actions.Daimyo;
 import com.collerton.samuraisword.game.model.actions.Distraction;
@@ -65,7 +65,7 @@ public class ActionTest {
 
     @AfterEach
     public void tearDown() {
-        GAME.clearAll();
+        GAME.reset();
     }
 
     @Test
@@ -135,5 +135,10 @@ public class ActionTest {
         geisha.play(victim);
 
         assertTrue(true);
+    }
+
+    @Test
+    public void testBattlecry() {
+
     }
 }

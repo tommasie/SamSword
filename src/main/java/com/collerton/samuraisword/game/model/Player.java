@@ -124,6 +124,10 @@ public class Player {
         this.role = role;
     }
 
+    public void removeRole() {
+        this.role = null;
+    }
+
     public GameCharacter getCharacter() {
         return character;
     }
@@ -140,6 +144,13 @@ public class Player {
         // Bump the player's properties
         this.character.play();
         resetResistancePoints();
+    }
+
+    public void removeCharacter() {
+        if(character != null) {
+            character.setOwner(null);
+            character = null;
+        }
     }
 
     public List<DeckCard> getCards() {
