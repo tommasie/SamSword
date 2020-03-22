@@ -161,11 +161,11 @@ public class GameSingleton {
 
     public void distributeHonorPoints() {
         int honorPoints = (players.size() < 6) ? 4 : 3;
-        for (Player p : players) {
-            if (p.getRole().getName().equals("Shogun"))
-                p.setHonorPoints(5);
-            else p.setHonorPoints(honorPoints);
-        }
+        players.forEach(player -> {
+            if (player.getRole().getName().equals("Shogun"))
+                player.setHonorPoints(5);
+            else player.setHonorPoints(honorPoints);
+        });
     }
 
     public Player getCurrentPlayer() {

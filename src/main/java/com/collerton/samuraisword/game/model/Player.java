@@ -23,11 +23,11 @@ import com.collerton.samuraisword.game.model.properties.Property;
 import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.server.PlayerSocketProxy;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -69,7 +69,7 @@ public class Player {
     private final List<DeckCard> cards;
 
     // Property cards played the player and shown to everyone
-    private Map<String, Stack<Property>> playedProperties;
+    private final Map<String, Stack<Property>> playedProperties;
 
     private PlayerSocketProxy proxy;
 
@@ -122,8 +122,8 @@ public class Player {
     }
 
     public void chooseRole(List<Role> roles) {
-        // Ask for a number between 1 and roles.size
-        int index = 0;
+        Random rand = new Random();
+        int index = rand.nextInt(roles.size());
         setRole(roles.remove(index));
     }
 
@@ -141,7 +141,8 @@ public class Player {
 
     public void chooseCharacter(List<GameCharacter> characters)
     {
-        int index = 0;
+        Random rand = new Random();
+        int index = rand.nextInt(characters.size());
         setCharacter(characters.remove(index));
     }
 
@@ -342,14 +343,7 @@ public class Player {
             } else if(result.contains(Jujitsu.DROP_WEAPON)) {
                 String[] tokens = result.split(" ");
                 String weapon = tokens[tokens.length - 1];
-                Iterator<DeckCard> iter = cards.iterator();
-                while(iter.hasNext()) {
-                    DeckCard c = iter.next();
-                    if(c.getName().equalsIgnoreCase(weapon)) {
-                        cards.remove(c);
-                        break;
-                    }
-                }
+                cards.removeIf(card -> card.getName().equalsIgnoreCase(weapon));
             }
         } else {
             System.out.println(name + " is not affected");
@@ -365,7 +359,7 @@ public class Player {
             if(result.equals(Battlecry.DROP_LIFE)) {
                 decreaseResistancePoints();
             } else if(result.contains(Battlecry.DROP_CARD)) {
-                cards.removeIf(card -> {return card.getName().equals("Parry");});
+                cards.removeIf(card -> card.getName().equals("Parry"));
             }
         } else {
             System.out.println(name + " is not affected");
@@ -404,6 +398,5 @@ public class Player {
         }
         return true;
     }
-
 
 }
