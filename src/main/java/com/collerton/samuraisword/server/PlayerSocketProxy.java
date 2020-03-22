@@ -16,10 +16,33 @@
  */
 package com.collerton.samuraisword.server;
 
+import com.collerton.samuraisword.game.model.Player;
+import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
+import org.javatuples.Pair;
+
 /**
  *
  * @author tommasie
  */
 public class PlayerSocketProxy {
+
+    private Set<Pair<Player, Socket>> playerSocketSet;
+
+    public PlayerSocketProxy() {
+        this.playerSocketSet = new HashSet<>();
+    }
+
+    public void addPlayer(Player player, Socket socket) {
+        Pair<Player, Socket> pair = Pair.with(player, socket);
+        playerSocketSet.add(pair);
+    }
+
+    public String requestAction(String action) {
+        // Send request message to "real" player and wait the answer
+        //TODO
+        return "";
+    }
 
 }

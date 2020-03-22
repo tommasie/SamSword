@@ -17,9 +17,13 @@
 package com.collerton.samuraisword.game.model;
 
 import com.collerton.samuraisword.game.exceptions.GameException;
+import com.collerton.samuraisword.game.model.actions.Battlecry;
+import com.collerton.samuraisword.game.model.actions.Jujitsu;
 import com.collerton.samuraisword.game.model.properties.Property;
 import com.collerton.samuraisword.game.model.characters.GameCharacter;
+import com.collerton.samuraisword.server.PlayerSocketProxy;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +71,8 @@ public class Player {
     // Property cards played the player and shown to everyone
     private Map<String, Stack<Property>> playedProperties;
 
+    private PlayerSocketProxy proxy;
+
     public Player(String name) {
         this.name = name;
         this .mHonorPoints = 0;
@@ -84,6 +90,7 @@ public class Player {
         this.character = null;
         this.cards = new LinkedList<>();
         this.playedProperties = new HashMap<>();
+        this.proxy = null;
     }
 
     public String getName() {
@@ -181,6 +188,10 @@ public class Player {
         this.resistancePoints = character.getResistancePoints();
     }
 
+    public void decreaseResistancePoints() {
+        resistancePoints--;
+    }
+
     public void increaseAttackBonus() {
         this.attackBonus += 1;
     }
@@ -253,6 +264,10 @@ public class Player {
         ignoresDifficulty = true;
     }
 
+    public void setProxy(PlayerSocketProxy proxy) {
+        this.proxy = proxy;
+    }
+
     public void giveCard(DeckCard card) {
         card.setOwner(this);
         cards.add(card);
@@ -313,7 +328,7 @@ public class Player {
      * @return boolean
      */
     public boolean canPlay() {
-        return resistancePoints == 0 || getCards().isEmpty();
+        return !(resistancePoints == 0 || getCards().isEmpty());
     }
 
     public void playJujitsu() {
@@ -321,7 +336,21 @@ public class Player {
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
-            //TODO pseudo AI?
+            String result = proxy.requestAction("decide jujitsu");
+            if(result.equals(Jujitsu.DROP_LIFE)) {
+                decreaseResistancePoints();
+            } else if(result.contains(Jujitsu.DROP_WEAPON)) {
+                String[] tokens = result.split(" ");
+                String weapon = tokens[tokens.length - 1];
+                Iterator<DeckCard> iter = cards.iterator();
+                while(iter.hasNext()) {
+                    DeckCard c = iter.next();
+                    if(c.getName().equalsIgnoreCase(weapon)) {
+                        cards.remove(c);
+                        break;
+                    }
+                }
+            }
         } else {
             System.out.println(name + " is not affected");
         }
@@ -332,7 +361,12 @@ public class Player {
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
-            //TODO pseudo AI?
+            String result = proxy.requestAction("decide battlecry");
+            if(result.equals(Battlecry.DROP_LIFE)) {
+                decreaseResistancePoints();
+            } else if(result.contains(Battlecry.DROP_CARD)) {
+                cards.removeIf(card -> {return card.getName().equals("Parry");});
+            }
         } else {
             System.out.println(name + " is not affected");
         }

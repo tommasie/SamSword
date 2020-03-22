@@ -24,18 +24,24 @@ import com.collerton.samuraisword.game.model.DeckCard;
 import com.collerton.samuraisword.game.model.GameSingleton;
 import com.collerton.samuraisword.game.model.Player;
 import com.collerton.samuraisword.game.model.Weapon;
+import com.collerton.samuraisword.game.model.actions.Battlecry;
+import com.collerton.samuraisword.game.model.actions.Jujitsu;
+import com.collerton.samuraisword.game.model.actions.Parry;
 import com.collerton.samuraisword.game.model.actions.TeaCeremony;
 import com.collerton.samuraisword.game.model.characters.Benkei;
 import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.game.model.properties.Armour;
 import com.collerton.samuraisword.game.model.properties.Property;
+import com.collerton.samuraisword.server.PlayerSocketProxy;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -138,7 +144,110 @@ public class ActionTest {
     }
 
     @Test
-    public void testBattlecry() {
+    public void testJujitsuLoseResistance() {
+        Player player = new Player("p1");
+        GAME.addPlayer(player);
+        Player victim = new Player("p2");
+        //Benkei gives 5 resistance points
+        GameCharacter benkei = new Benkei();
+        victim.setCharacter(benkei);
+        //Give the victim a card, otherwise he will not be affected
+        DeckCard bokken = new Weapon("Bokken", 1, 1);
+        victim.giveCard(bokken);
+        PlayerSocketProxy loseLifeProxy = new PlayerSocketProxy() {
+            @Override
+            public String requestAction(String action) {
+                return Jujitsu.DROP_LIFE;
+            }
+        };
+        victim.setProxy(loseLifeProxy);
+        GAME.addPlayer(victim);
 
+        DeckCard jujitsu = new Jujitsu();
+        jujitsu.setOwner(player);
+        jujitsu.play();
+
+        assertEquals(4, victim.getResistancePoints());
+    }
+
+    @Test
+    public void testJujitsuLoseWeapon() {
+        Player player = new Player("p1");
+        GAME.addPlayer(player);
+        Player victim = new Player("p2");
+        //Benkei gives 5 resistance points
+        GameCharacter benkei = new Benkei();
+        victim.setCharacter(benkei);
+        DeckCard bokken = new Weapon("Bokken", 1, 1);
+        victim.giveCard(bokken);
+        PlayerSocketProxy loseWeaponProxy = new PlayerSocketProxy() {
+            @Override
+            public String requestAction(String action) {
+                return Jujitsu.DROP_WEAPON + " bokken";
+            }
+        };
+        victim.setProxy(loseWeaponProxy);
+        GAME.addPlayer(victim);
+
+        DeckCard jujitsu = new Jujitsu();
+        jujitsu.setOwner(player);
+        jujitsu.play();
+
+        assertEquals(5, victim.getResistancePoints());
+        assertFalse(victim.getCards().contains(bokken));
+    }
+
+    @Test
+    public void testBattlecryLoseResistance() {
+        Player player = new Player("p1");
+        GAME.addPlayer(player);
+        Player victim = new Player("p2");
+        //Benkei gives 5 resistance points
+        GameCharacter benkei = new Benkei();
+        victim.setCharacter(benkei);
+        DeckCard bokken = new Weapon("Bokken", 1, 1);
+        victim.giveCard(bokken);
+        PlayerSocketProxy loseLifeProxy = new PlayerSocketProxy() {
+            @Override
+            public String requestAction(String action) {
+                return Battlecry.DROP_LIFE;
+            }
+        };
+        victim.setProxy(loseLifeProxy);
+        GAME.addPlayer(victim);
+
+        DeckCard battlecry = new Battlecry();
+        battlecry.setOwner(player);
+        battlecry.play();
+
+        assertEquals(4, victim.getResistancePoints());
+    }
+
+    @Test
+    public void testBattlecryLoseParry() {
+        Player player = new Player("p1");
+        GAME.addPlayer(player);
+        Player victim = new Player("p2");
+        //Benkei gives 5 resistance points
+        GameCharacter benkei = new Benkei();
+        victim.setCharacter(benkei);
+        DeckCard parry = new Parry();
+        victim.giveCard(parry);
+
+        PlayerSocketProxy loseCardProxy = new PlayerSocketProxy() {
+            @Override
+            public String requestAction(String action) {
+                return Battlecry.DROP_CARD;
+            }
+        };
+        victim.setProxy(loseCardProxy);
+        GAME.addPlayer(victim);
+
+        DeckCard battlecry = new Battlecry();
+        battlecry.setOwner(player);
+        battlecry.play();
+
+        assertEquals(5, victim.getResistancePoints());
+        assertFalse(victim.getCards().contains(parry));
     }
 }

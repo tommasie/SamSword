@@ -213,7 +213,6 @@ public class GameSingletonTest {
         p6.setRole(r6);
         GAME.addPlayer(p6);
 
-        GAME.printGameState();
         GAME.initRound();
         GAME.distributeCards();
         Player player = GAME.getCurrentPlayer();

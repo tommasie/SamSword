@@ -27,6 +27,9 @@ import com.collerton.samuraisword.game.model.Player;
  */
 public class Battlecry extends DeckCard {
 
+    public static final String DROP_LIFE = "drop life";
+    public static final String DROP_CARD = "drop card";
+
     public Battlecry() {
         super("Battlecry");
     }
@@ -35,7 +38,7 @@ public class Battlecry extends DeckCard {
     protected void playInternal() {
         for(Player p : GAME.getPlayers()) {
             if(!p.equals(owner)) {
-                //TODO choose between life or parry
+                p.playBattlecry();
             }
         }
     }

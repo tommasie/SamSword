@@ -27,6 +27,9 @@ import com.collerton.samuraisword.game.model.Player;
  */
 public class Jujitsu extends DeckCard {
 
+    public static final String DROP_LIFE = "drop life";
+    public static final String DROP_WEAPON = "drop weapon";
+
     public Jujitsu() {
         super("Jujitsu");
     }
@@ -35,7 +38,7 @@ public class Jujitsu extends DeckCard {
     protected void playInternal() {
         for(Player p : GAME.getPlayers()) {
             if(!p.equals(owner)) {
-                //TODO choose between life or weapon
+                p.playJujitsu();
             }
         }
     }
