@@ -14,38 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.game.model.characters;
+package com.collerton.samuraisword.server.commands.client;
 
-import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.server.commands.Command;
+import java.util.Queue;
 
 /**
  *
  * @author tommasie
  */
-public abstract class GameCharacter {
+public class GameInfo extends Command {
 
-    private String name;
-    private int resistancePoints;
-    protected Player owner;
-
-    public GameCharacter(String name, int resistancePoints) {
-        this.name = name;
-        this.resistancePoints = resistancePoints;
-        owner = null;
+    public GameInfo() {
+        super("Game info");
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public void execute(Queue<String> params) {
+        try {
+            okResponse = GAME.getGameState();
+            executionStatus = true;
+        } catch(Exception e) {
+            errorResponse = "Something went wrong";
+            executionStatus = false;
+        }
     }
-
-    public int getResistancePoints() {
-        return resistancePoints;
-    }
-
-    public void setOwner(Player player) {
-        this.owner = player;
-    }
-
-    public abstract void play();
 
 }

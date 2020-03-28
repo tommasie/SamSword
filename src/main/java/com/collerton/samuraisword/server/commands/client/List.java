@@ -16,49 +16,39 @@
  */
 package com.collerton.samuraisword.server.commands.client;
 
-import com.collerton.samuraisword.game.model.Player;
-import com.collerton.samuraisword.server.LoginFacade;
+import com.collerton.samuraisword.game.model.DeckCard;
 import com.collerton.samuraisword.server.commands.Command;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Queue;
-import org.java_websocket.WebSocket;
 
 /**
  *
  * @author tommasie
  */
-public class Login extends Command {
+public class List extends Command {
 
-    public Login() {
-        super("Login");
+    public List() {
+        super("List");
     }
 
     @Override
     public void execute(Queue<String> params) {
-        String user = params.remove();
-        if (LoginFacade.checkUserConnected(user)) {
-            errorResponse = "User already existing, bye!";
+        if (params.size() > 1) {
+            errorResponse = "Too many arguments";
             executionStatus = false;
+
         } else {
-            player = new Player(user);
-            GAME.addPlayer(player);
-            okResponse = "Welcome to the game!";
+            okResponse = player.displayCards();
             executionStatus = true;
             /*
-            System.out.println("User doesn't exist, request room pass");
-            if(LoginFacade.checkPassword(params.remove())) {
-                LoginFacade.storeUser(user);
-                websocket.send("Login successful, welcome!");
-                status = true;
-            } else {
-                websocket.send("Wrong password, bye!");
-                status = false;
-            }*/
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("Cards in your hand: %d\n", player.getCards().size()));
+            for (DeckCard card : player.getCards()) {
+                sb.append(String.format("Name: %s\n", card.getName()));
+                sb.append(String.format("Description: %s\n", "desc"));
+            }
+            */
         }
+
     }
 
 }

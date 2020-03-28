@@ -81,4 +81,12 @@ public abstract class DeckCard {
         owner.discardCard(this);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Name: %s\n", name));
+        sb.append(String.format("Description: %s\n", ""));
+        return sb.toString();
+    }
+
 }

@@ -6,6 +6,7 @@
 package com.collerton.samuraisword.server;
 
 import com.collerton.samuraisword.game.model.GameSingleton;
+import java.net.InetSocketAddress;
 
 /**
  *
@@ -17,6 +18,8 @@ public class Main {
         GameSingleton GAME = GameSingleton.getInstance();
         Server server = new Server("localhost", 1337);
         server.start();
+        //GameSocketServer server = new GameSocketServer(new InetSocketAddress("localhost", 1337));
+        //server.run();
     }
 
 }

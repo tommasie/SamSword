@@ -46,7 +46,7 @@ public class Player {
     private boolean isAdmin;
 
     // Main player points
-    private int mHonorPoints;
+    private int honorPoints;
     private int resistancePoints;
 
     // List of properties affected by the character and Property cards
@@ -77,7 +77,7 @@ public class Player {
     public Player(String name) {
         this.name = name;
         isAdmin = false;
-        this .mHonorPoints = 0;
+        this .honorPoints = 0;
         this.resistancePoints = 0;
         this.attackBonus = 0;
         this.distanceBonus = 0;
@@ -108,7 +108,7 @@ public class Player {
     }
 
     public int getHonorPoints() {
-        return mHonorPoints;
+        return honorPoints;
     }
 
     public int getResistancePoints() {
@@ -189,16 +189,16 @@ public class Player {
     }
 
     public void setHonorPoints(int points) {
-        this.mHonorPoints = points;
+        this.honorPoints = points;
     }
 
     public void increaseHonorPoints() {
-        this.mHonorPoints += 1;
+        this.honorPoints += 1;
     }
 
     public void decreaseHonorPoints() {
-        this.mHonorPoints -= 1;
-        if(this.mHonorPoints == 0) {
+        this.honorPoints -= 1;
+        if(this.honorPoints == 0) {
             System.out.println("I am a loser");
             GAME.endGame();
         }
@@ -383,6 +383,34 @@ public class Player {
         } else {
             System.out.println(name + " is not affected");
         }
+    }
+
+    public String displayCards() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cards in hand:\n");
+        cards.forEach(card -> sb.append(card.toString()).append("\n"));
+        sb.append("Played properties:\n");
+        for(String propertyName : playedProperties.keySet()) {
+            sb.append(propertyName)
+                    .append(" x")
+                    .append(playedProperties.get(propertyName).size())
+                    .append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Name: %s\n", name));
+        if(role.getName().equals("Shogun"))
+            sb.append(String.format("Role: %s\n", role.getName()));
+        sb.append(String.format("Character: %s\n", character.getName()));
+        sb.append(String.format("Description: %s\n", "desc"));
+        sb.append(String.format("Cards in hand: %d\n", cards.size()));
+        sb.append(String.format("Stats: Resistance: %d, Honor: %d\n", resistancePoints, honorPoints));
+
+        return sb.toString();
     }
 
     @Override

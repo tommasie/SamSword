@@ -11,9 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -70,12 +67,14 @@ public class Server extends Thread {
 
 class ServiceRequest implements Runnable {
 
-    private Socket socket;
+    private final Socket socket;
     private Room room;
+    private final MessageInterface iface;
 
     public ServiceRequest(Socket connection, Room room) {
         this.socket = connection;
         this.room = room;
+        this.iface = new MessageInterface(this);
     }
 
     @Override
@@ -84,17 +83,9 @@ class ServiceRequest implements Runnable {
         //Do your logic here. You have the `socket` available to read/write data.
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-            CommandFactory commandFactory = CommandFactory.getInstance();
-            String line = reader.readLine();
-            System.out.println(line);
-            Queue<String> commandLineQueue = new LinkedList<>();
-            Arrays.stream(line.split(" ")).forEachOrdered(item -> {commandLineQueue.add(item);});
-            Command command = commandFactory.getCommand(commandLineQueue.remove());
-            if (command != null) {
-                boolean loginStatus = command.execute(socket, commandLineQueue);
-                if(loginStatus)
-                    room.addSocket(socket);
+            String line;
+            while(!(line = reader.readLine()).equals("quit")) {
+                iface.receive(line);
             }
         } catch(IOException ioe) {
             System.out.println(ioe);
@@ -104,6 +95,20 @@ class ServiceRequest implements Runnable {
             socket.close();
         }catch(IOException ioe) {
             System.out.println("Error closing client connection");
+        }
+    }
+
+    public void runByteStream() {
+        //byte[] bytes = IOUtils.toByteArray(socket.getInputStream());
+    }
+
+    public void writeOnStream(String str) {
+        try {
+        PrintWriter writer = new PrintWriter(socket.getOutputStream());
+        writer.print(str);
+        writer.flush();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 }

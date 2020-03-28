@@ -65,5 +65,13 @@ public class Weapon extends DeckCard {
         //TODO how to handle weapons?
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Name: %s\n", getName()));
+        sb.append(String.format("Damage: %d\n", attackPoints));
+        sb.append(String.format("Distance: %d\n", difficulty));
+        return sb.toString();
+    }
 
 }

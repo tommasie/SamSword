@@ -14,11 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server;
+package com.collerton.samuraisword.server.commands;
 
+import com.collerton.samuraisword.game.model.GameSingleton;
+import com.collerton.samuraisword.game.model.Player;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Queue;
+import org.java_websocket.WebSocket;
 
 /**
  *
@@ -27,11 +30,52 @@ import java.util.Queue;
 public abstract class Command {
 
     private String name;
+    protected Queue<String> params;
+    protected boolean resolved;
+    protected boolean executionStatus;
+    protected String okResponse;
+    protected String errorResponse;
+    protected Player player;
+    protected static final GameSingleton GAME = GameSingleton.getInstance();
 
     public Command(String name) {
         this.name = name;
+        resolved = false;
+        executionStatus = false;
+        player = null;
     }
 
-    public abstract boolean execute(Socket socket, Queue<String> params) throws IOException;
+    public Command(String name, Queue<String> params) {
+        this(name);
+        this.params = params;
+
+    }
+
+    public abstract void execute(Queue<String> params);
+
+    public boolean getStatus() {
+        return executionStatus;
+    }
+
+    public boolean isResolved() {
+        return resolved;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public String getOkResponse() {
+        return okResponse;
+    }
+
+    public String getErrorResponse() {
+        return errorResponse;
+    }
+
 
 }

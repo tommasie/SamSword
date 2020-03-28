@@ -17,12 +17,9 @@
 package com.collerton.samuraisword.server.commands.client;
 
 import com.collerton.samuraisword.game.model.Player;
-import com.collerton.samuraisword.server.LoginFacade;
+import com.collerton.samuraisword.server.PlayerSocketProxy;
 import com.collerton.samuraisword.server.commands.Command;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Queue;
 import org.java_websocket.WebSocket;
@@ -31,33 +28,26 @@ import org.java_websocket.WebSocket;
  *
  * @author tommasie
  */
-public class Login extends Command {
+public class End extends Command{
 
-    public Login() {
-        super("Login");
+    public End() {
+        super("End");
     }
 
     @Override
-    public void execute(Queue<String> params) {
-        String user = params.remove();
-        if (LoginFacade.checkUserConnected(user)) {
-            errorResponse = "User already existing, bye!";
-            executionStatus = false;
-        } else {
-            player = new Player(user);
-            GAME.addPlayer(player);
-            okResponse = "Welcome to the game!";
-            executionStatus = true;
-            /*
-            System.out.println("User doesn't exist, request room pass");
-            if(LoginFacade.checkPassword(params.remove())) {
-                LoginFacade.storeUser(user);
-                websocket.send("Login successful, welcome!");
-                status = true;
+    public void execute(Queue<String> params){
+        try {
+            if(player != null && player == GAME.getCurrentPlayer()) {
+                GAME.nextRound();
+                okResponse = "Your turn has ended";
+                executionStatus = true;
             } else {
-                websocket.send("Wrong password, bye!");
-                status = false;
-            }*/
+                errorResponse = "Something went wrong";
+                executionStatus = false;
+            }
+        } catch (Exception e) {
+            errorResponse = "Something went wrong";
+            executionStatus = false;
         }
     }
 

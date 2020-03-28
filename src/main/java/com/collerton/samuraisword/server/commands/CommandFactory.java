@@ -14,7 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.collerton.samuraisword.server;
+package com.collerton.samuraisword.server.commands;
+
+import com.collerton.samuraisword.server.commands.client.GameInfo;
+import com.collerton.samuraisword.server.commands.client.List;
+import com.collerton.samuraisword.server.commands.client.Login;
+import com.collerton.samuraisword.server.commands.client.Play;
+import com.collerton.samuraisword.server.commands.client.Start;
 
 /**
  *
@@ -37,6 +43,14 @@ public class CommandFactory {
     public Command getCommand(String command) {
         if(command.equals("login"))
             return new Login();
+        if(command.equals("start"))
+            return new Start();
+        if(command.equals("info"))
+            return new GameInfo();
+        if(command.equals("list"))
+            return new List();
+        if(command.equals("play"))
+            return new Play();
         return null;
     }
 

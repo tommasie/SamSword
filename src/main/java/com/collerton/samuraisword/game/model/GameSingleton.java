@@ -20,6 +20,15 @@ import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.game.config.ConfigFactory;
 import com.collerton.samuraisword.game.config.YamlLoader;
 import com.collerton.samuraisword.game.list.PlayerListNode;
+import com.collerton.samuraisword.game.model.characters.Benkei;
+import com.collerton.samuraisword.game.model.characters.Chiyome;
+import com.collerton.samuraisword.game.model.characters.Ginchiyo;
+import com.collerton.samuraisword.game.model.characters.Goemon;
+import com.collerton.samuraisword.game.model.characters.Hanzo;
+import com.collerton.samuraisword.game.model.characters.Hideyoshi;
+import com.collerton.samuraisword.game.model.characters.Ieyasu;
+import com.collerton.samuraisword.game.model.characters.Kojiro;
+import com.collerton.samuraisword.game.model.characters.Musachi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -94,11 +103,26 @@ public class GameSingleton {
         return null;
     }
 
-    public void startGame() {
-        configLoader = new YamlLoader();
-        giveRoles();
-        giveCharacters();
-        initDeck();
+    public boolean startGame() {
+        if(players.size() > 3) {
+            configLoader = new YamlLoader();
+            giveRoles();
+            System.out.println("roles given");
+            giveCharacters();
+            System.out.println("chars given");
+            initDeck();
+            System.out.println("deck setup");
+            initRound();
+            System.out.println("round setup");
+            distributeCards();
+            System.out.println("cards given");
+            distributeHonorPoints();
+            System.out.println("honor points given");
+            return true;
+        } else {
+            System.out.println("players: " + players.size());
+            return false;
+        }
     }
 
     public boolean started() {
@@ -116,7 +140,17 @@ public class GameSingleton {
     }
 
     private void giveCharacters() {
-        List<GameCharacter> characters = new ArrayList<>();
+        List<GameCharacter> characters = new ArrayList<GameCharacter>() {{
+            add(new Benkei());
+            add(new Chiyome());
+            add(new Ginchiyo());
+            add(new Goemon());
+            add(new Hanzo());
+            add(new Hideyoshi());
+            add(new Ieyasu());
+            add(new Kojiro());
+            add(new Musachi());
+        }};
         Collections.shuffle(characters);
 
         for(Player player : players) {
@@ -129,6 +163,7 @@ public class GameSingleton {
         deck.addAll(cardsLoader.getConcreteWeapons());
         deck.addAll(cardsLoader.getConcreteActions());
         deck.addAll(cardsLoader.getConcreteProperties());
+        Collections.shuffle(deck);
     }
 
     public void initRound() {
@@ -291,9 +326,18 @@ public class GameSingleton {
     public String getGameState() {
         StringBuilder sb = new StringBuilder();
         sb.append("Current game status\n");
-        sb.append("Players:\n");
+        sb.append("Players: ");
         for(Player p : players) {
-            sb.append("\t").append(p.getName()).append("\n");
+            sb.append(p.getName()).append(" ");
+        }
+        sb.append("\n");
+
+        PlayerListNode iter = currentPlayer;
+        int i = 0;
+        while(i < players.size()) {
+            sb.append(iter.getPlayer().toString()).append("\n");
+            iter = iter.getNext();
+            i++;
         }
         return sb.toString();
     }

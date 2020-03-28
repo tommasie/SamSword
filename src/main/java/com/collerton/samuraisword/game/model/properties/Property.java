@@ -41,4 +41,12 @@ public abstract class Property extends DeckCard {
 
     public abstract void decreasePlayerAttributes();
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Name: %s\n", getName()));
+        sb.append(String.format("Description: %s\n", description));
+        return sb.toString();
+    }
+
 }

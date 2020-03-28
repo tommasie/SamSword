@@ -16,10 +16,11 @@
  */
 package com.collerton.samuraisword.server;
 
-import com.collerton.samuraisword.game.model.Player;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import static java.util.stream.Collectors.toList;
 import org.javatuples.Pair;
 
 /**
@@ -28,14 +29,14 @@ import org.javatuples.Pair;
  */
 public class PlayerSocketProxy {
 
-    private Set<Pair<Player, Socket>> playerSocketSet;
+    private Set<Pair<String, Socket>> playerSocketSet;
 
     public PlayerSocketProxy() {
         this.playerSocketSet = new HashSet<>();
     }
 
-    public void addPlayer(Player player, Socket socket) {
-        Pair<Player, Socket> pair = Pair.with(player, socket);
+    public void addPlayer(String player, Socket socket) {
+        Pair<String, Socket> pair = Pair.with(player, socket);
         playerSocketSet.add(pair);
     }
 
@@ -43,6 +44,15 @@ public class PlayerSocketProxy {
         // Send request message to "real" player and wait the answer
         //TODO
         return "";
+    }
+
+    public String getPlayer(Socket socket) {
+        return playerSocketSet.stream().findFirst().get().getValue0();
+    }
+
+    public List<String> getPlayerNames() {
+        List<String> players = playerSocketSet.stream().map(kv -> kv.getValue0()).collect(toList());
+        return players;
     }
 
 }
