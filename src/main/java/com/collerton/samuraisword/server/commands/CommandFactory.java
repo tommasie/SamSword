@@ -17,6 +17,7 @@
 package com.collerton.samuraisword.server.commands;
 
 import com.collerton.samuraisword.server.commands.client.GameInfo;
+import com.collerton.samuraisword.server.commands.client.Help;
 import com.collerton.samuraisword.server.commands.client.List;
 import com.collerton.samuraisword.server.commands.client.Login;
 import com.collerton.samuraisword.server.commands.client.Play;
@@ -43,6 +44,8 @@ public class CommandFactory {
     public Command getCommand(String command) {
         if(command.equals("login"))
             return new Login();
+        if(command.equals("help"))
+            return new Help();
         if(command.equals("start"))
             return new Start();
         if(command.equals("info"))
