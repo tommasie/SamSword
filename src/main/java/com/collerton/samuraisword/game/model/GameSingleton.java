@@ -39,6 +39,8 @@ public class GameSingleton {
 
     private YamlLoader configLoader;
 
+    private boolean started;
+
     private int numberPlayers;
 
     private final Set<Player> players;
@@ -50,6 +52,7 @@ public class GameSingleton {
     private final Stack<DeckCard> cemetery;
 
     private GameSingleton() {
+        started = false;
         this.numberPlayers = 0;
         this.players = new HashSet<>();
         this.currentPlayer = null;
@@ -70,11 +73,25 @@ public class GameSingleton {
 
     //To be called when user logs in
     public void addPlayer(Player player) {
-        this.players.add(player);
+        players.add(player);
+    }
+
+    public void createPlayer(String playerName) {
+        Player player = new Player(playerName);
+        addPlayer(player);
     }
 
     public Set<Player> getPlayers() {
         return this.players;
+    }
+
+    public Player getPlayerByName(String playerName) {
+        for(Player player : players) {
+            if(player.getName().equals(playerName)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     public void startGame() {
@@ -82,6 +99,10 @@ public class GameSingleton {
         giveRoles();
         giveCharacters();
         initDeck();
+    }
+
+    public boolean started() {
+        return started;
     }
 
     private void giveRoles() {
@@ -265,6 +286,16 @@ public class GameSingleton {
             System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
             System.out.printf("Next player: %s\n", currentPlayer.getPrevious().getPlayer().getName());
         }
+    }
+
+    public String getGameState() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Current game status\n");
+        sb.append("Players:\n");
+        for(Player p : players) {
+            sb.append("\t").append(p.getName()).append("\n");
+        }
+        return sb.toString();
     }
 
 }

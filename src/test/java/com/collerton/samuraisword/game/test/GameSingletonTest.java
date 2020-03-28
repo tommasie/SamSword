@@ -12,6 +12,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,28 @@ public class GameSingletonTest {
     @AfterEach
     public void tearDown() {
         GAME.reset();
+    }
+
+    @Test
+    public void testGetPlayerByName() {
+        Player p1 = new Player("p1");
+        GAME.addPlayer(p1);
+        Player p2 = new Player("p2");
+        GAME.addPlayer(p2);
+
+        Player player = GAME.getPlayerByName("p1");
+        assertTrue(player == p1);
+    }
+
+    @Test
+    public void testGetPlayerByNameNotExisting() {
+        Player p1 = new Player("p1");
+        GAME.addPlayer(p1);
+        Player p2 = new Player("p2");
+        GAME.addPlayer(p2);
+
+        Player player = GAME.getPlayerByName("p3");
+        assertNull(player);
     }
 
     /**

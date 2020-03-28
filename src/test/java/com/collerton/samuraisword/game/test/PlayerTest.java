@@ -87,4 +87,43 @@ public class PlayerTest {
         assertEquals(0, player.getPlayedProperties().get("Armour").size());
         assertEquals(0, player.getDistanceBonus());
     }
+
+    @Test
+    public void testGetCardInHand() {
+        Player player = new Player("name");
+        Weapon bokken = new Weapon("bokken", 1, 1);
+        player.giveCard(bokken);
+        String cardName = "bokken";
+        DeckCard card = player.getCardByName(cardName);
+        assertTrue(card == bokken);
+    }
+
+    @Test
+    public void testGetCardInHandCapitalized() {
+        Player player = new Player("name");
+        Weapon bokken = new Weapon("bokken", 1, 1);
+        player.giveCard(bokken);
+        String cardName = "Bokken";
+        DeckCard card = player.getCardByName(cardName);
+        assertTrue(card == bokken);
+    }
+
+    @Test
+    public void testGetCardInHandDiscarded() {
+        Player player = new Player("name");
+        Weapon bokken = new Weapon("bokken", 1, 1);
+        player.giveCard(bokken);
+        player.discardCard(bokken);
+        DeckCard card = player.getCardByName("bokken");
+        assertNull(card);
+    }
+
+    @Test
+    public void testGetCardInHandNotExisting() {
+        Player player = new Player("name");
+        Weapon bokken = new Weapon("bokken", 1, 1);
+        player.giveCard(bokken);
+        DeckCard card = player.getCardByName("hadouken");
+        assertNull(card);
+    }
 }

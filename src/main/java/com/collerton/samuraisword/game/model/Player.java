@@ -43,6 +43,7 @@ public class Player {
 
     // Username, unique for each game
     private final String name;
+    private boolean isAdmin;
 
     // Main player points
     private int mHonorPoints;
@@ -75,6 +76,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        isAdmin = false;
         this .mHonorPoints = 0;
         this.resistancePoints = 0;
         this.attackBonus = 0;
@@ -95,6 +97,14 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public int getHonorPoints() {
@@ -163,6 +173,15 @@ public class Player {
 
     public List<DeckCard> getCards() {
         return cards;
+    }
+
+    public DeckCard getCardByName(String cardName) {
+        for(DeckCard card : cards) {
+            if(card.getName().equalsIgnoreCase(cardName)) {
+                return card;
+            }
+        }
+        return null;
     }
 
     public Map<String, Stack<Property>> getPlayedProperties() {
