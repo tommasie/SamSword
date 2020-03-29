@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +26,7 @@ public class Server extends Thread {
     private String host;
     private int port;
     private Room room;
+    private AtomicBoolean running;
     private static final int MAX_CONNECTIONS = 7;
 
     ServerSocket socket;
@@ -39,6 +41,7 @@ public class Server extends Thread {
         this.host = host;
         this.port = port;
         room = new Room();
+        running = new AtomicBoolean(false);
         initSocket();
     }
 
@@ -52,7 +55,8 @@ public class Server extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        running.set(true);
+        while(running.get()) {
             try {
                 Socket clientSocket = socket.accept();
                 System.out.println("Reading request");
@@ -61,6 +65,15 @@ public class Server extends Thread {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        try {
+            socket.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopServer() {
+        running.set(false);
     }
 
 }
@@ -70,11 +83,13 @@ class ServiceRequest implements Runnable {
     private final Socket socket;
     private Room room;
     private final MessageInterface iface;
+    private final BroadcastMessageSingleton broadcast = BroadcastMessageSingleton.getInstance();
 
     public ServiceRequest(Socket connection, Room room) {
         this.socket = connection;
         this.room = room;
         this.iface = new MessageInterface(this);
+        broadcast.addRequest(this);
     }
 
     @Override

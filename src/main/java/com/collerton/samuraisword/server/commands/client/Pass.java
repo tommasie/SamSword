@@ -16,21 +16,16 @@
  */
 package com.collerton.samuraisword.server.commands.client;
 
-import com.collerton.samuraisword.game.model.Player;
-import com.collerton.samuraisword.server.PlayerSocketProxy;
 import com.collerton.samuraisword.server.commands.Command;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.Queue;
-import org.java_websocket.WebSocket;
 
 /**
  *
  * @author tommasie
  */
-public class End extends Command{
+public class Pass extends Command {
 
-    public End() {
+    public Pass() {
         super("End");
     }
 
@@ -42,7 +37,7 @@ public class End extends Command{
                 okResponse = "Your turn has ended";
                 executionStatus = true;
             } else {
-                errorResponse = "Something went wrong";
+                errorResponse = "You're not the active player";
                 executionStatus = false;
             }
         } catch (Exception e) {

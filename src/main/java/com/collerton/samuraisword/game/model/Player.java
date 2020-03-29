@@ -17,8 +17,6 @@
 package com.collerton.samuraisword.game.model;
 
 import com.collerton.samuraisword.game.exceptions.GameException;
-import com.collerton.samuraisword.game.model.actions.Battlecry;
-import com.collerton.samuraisword.game.model.actions.Jujitsu;
 import com.collerton.samuraisword.game.model.properties.Property;
 import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.server.PlayerSocketProxy;
@@ -27,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
 
@@ -60,6 +59,10 @@ public class Player {
     private boolean canPickFromCemetery;
     private boolean ignoresDifficulty;
 
+    private boolean awaitingJujitsu;
+    private boolean awaitingBattlery;
+    private boolean awaitingAttack;
+
     // Role given at the beginning of the game
     private Role role;
 
@@ -73,6 +76,8 @@ public class Player {
     private final Map<String, Stack<Property>> playedProperties;
 
     private PlayerSocketProxy proxy;
+
+    private Queue<Weapon> queuedAttacks;
 
     public Player(String name) {
         this.name = name;
@@ -88,11 +93,15 @@ public class Player {
         this.canPickExtraCard = false;
         this.canPickFromCemetery = false;
         this.ignoresDifficulty = false;
+        this.awaitingJujitsu = false;
+        this.awaitingBattlery = false;
+        this.awaitingAttack = false;
         this.role = null;
         this.character = null;
         this.cards = new LinkedList<>();
         this.playedProperties = new HashMap<>();
         this.proxy = null;
+        this.queuedAttacks = new LinkedList<>();
     }
 
     public String getName() {
@@ -326,8 +335,6 @@ public class Player {
         } catch(GameException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void discardProperty(Property property) {
@@ -338,9 +345,13 @@ public class Player {
         return cards.remove(index);
     }
 
-    public void discardCard(DeckCard card) {
-        cards.remove(card);
-        GAME.addCardToCemetery(card);
+    public boolean discardCard(DeckCard card) {
+        if(cards.contains(card)) {
+            cards.remove(card);
+            GAME.addCardToCemetery(card);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -356,7 +367,9 @@ public class Player {
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
+            awaitingJujitsu = true;
             String result = proxy.requestAction("decide jujitsu");
+            /*
             if(result.equals(Jujitsu.DROP_LIFE)) {
                 decreaseResistancePoints();
             } else if(result.contains(Jujitsu.DROP_WEAPON)) {
@@ -364,9 +377,19 @@ public class Player {
                 String weapon = tokens[tokens.length - 1];
                 cards.removeIf(card -> card.getName().equalsIgnoreCase(weapon));
             }
+            awaitingJujitsu = false;
+            */
         } else {
             System.out.println(name + " is not affected");
         }
+    }
+
+    public boolean getAwaitsJujitsu() {
+        return awaitingJujitsu;
+    }
+
+    public void setAwaitsJujitsu(boolean awaitsJujitsu) {
+        this.awaitingJujitsu = awaitsJujitsu;
     }
 
     public void playBattlecry() {
@@ -374,15 +397,53 @@ public class Player {
          * resistance point, and perhaps forget he can not give anything (like I usually do)
          */
         if (canPlay() && !damageOnlyFromWeapons) {
+            awaitingBattlery = true;
             String result = proxy.requestAction("decide battlecry");
+            /*
             if(result.equals(Battlecry.DROP_LIFE)) {
                 decreaseResistancePoints();
             } else if(result.contains(Battlecry.DROP_CARD)) {
-                cards.removeIf(card -> card.getName().equals("Parry"));
+                cards.removeIf(card -> card.getName().equalsIgnoreCase("Parry"));
             }
+            awaitingBattlery = false;
+            */
         } else {
             System.out.println(name + " is not affected");
         }
+    }
+
+    public boolean getAwaitsBattlecry() {
+        return awaitingBattlery;
+    }
+
+    public void setAwaitsBattlecry(boolean awaitsBattlecry) {
+        this.awaitingBattlery = awaitsBattlecry;
+    }
+
+    public void requestAttack(Weapon weapon) {
+        awaitingAttack = true;
+        queuedAttacks.add(weapon);
+        String result = proxy.requestAction("decide attack");
+    }
+
+    public void sufferAttack() {
+        Weapon weapon = queuedAttacks.remove();
+        resistancePoints -= weapon.getAttackPoints();
+        if(suffersLessDamage)
+            resistancePoints++;
+        if(resistancePoints <= 0) {
+            resistancePoints = 0;
+            decreaseHonorPoints();
+        }
+        awaitingAttack = false;
+    }
+
+    public boolean getAwaitsAttack() {
+        return awaitingAttack;
+    }
+
+    public void setAwaitsAttack(boolean awaitsAttack) {
+        this.awaitingAttack = awaitsAttack;
     }
 
     public String displayCards() {

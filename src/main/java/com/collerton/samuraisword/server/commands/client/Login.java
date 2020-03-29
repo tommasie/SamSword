@@ -19,13 +19,7 @@ package com.collerton.samuraisword.server.commands.client;
 import com.collerton.samuraisword.game.model.Player;
 import com.collerton.samuraisword.server.LoginFacade;
 import com.collerton.samuraisword.server.commands.Command;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Queue;
-import org.java_websocket.WebSocket;
 
 /**
  *

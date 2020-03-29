@@ -16,11 +16,14 @@
  */
 package com.collerton.samuraisword.server.commands;
 
+import com.collerton.samuraisword.server.commands.client.Attack;
 import com.collerton.samuraisword.server.commands.client.GameInfo;
 import com.collerton.samuraisword.server.commands.client.Help;
 import com.collerton.samuraisword.server.commands.client.List;
 import com.collerton.samuraisword.server.commands.client.Login;
+import com.collerton.samuraisword.server.commands.client.Pass;
 import com.collerton.samuraisword.server.commands.client.Play;
+import com.collerton.samuraisword.server.commands.client.Respond;
 import com.collerton.samuraisword.server.commands.client.Start;
 
 /**
@@ -54,6 +57,12 @@ public class CommandFactory {
             return new List();
         if(command.equals("play"))
             return new Play();
+        if(command.equals("attack"))
+            return new Attack();
+        if(command.equals("respond"))
+            return new Respond();
+        if(command.equals("pass"))
+            return new Pass();
         return null;
     }
 

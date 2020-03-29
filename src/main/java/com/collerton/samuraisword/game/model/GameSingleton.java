@@ -29,6 +29,7 @@ import com.collerton.samuraisword.game.model.characters.Hideyoshi;
 import com.collerton.samuraisword.game.model.characters.Ieyasu;
 import com.collerton.samuraisword.game.model.characters.Kojiro;
 import com.collerton.samuraisword.game.model.characters.Musachi;
+import com.collerton.samuraisword.server.BroadcastMessageSingleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,6 +46,8 @@ import java.util.Stack;
 public class GameSingleton {
 
     private static GameSingleton instance;
+
+    private static final BroadcastMessageSingleton broadcast = BroadcastMessageSingleton.getInstance();
 
     private YamlLoader configLoader;
 
@@ -107,17 +110,19 @@ public class GameSingleton {
         if(players.size() > 3) {
             configLoader = new YamlLoader();
             giveRoles();
-            System.out.println("roles given");
+            broadcast.sendMessage("Roles have been distributed");
             giveCharacters();
-            System.out.println("chars given");
+            broadcast.sendMessage("Characters have been distributed");
             initDeck();
-            System.out.println("deck setup");
+            broadcast.sendMessage("Deck is ready");
             initRound();
-            System.out.println("round setup");
+            broadcast.sendMessage("The round is set up");
             distributeCards();
-            System.out.println("cards given");
+            broadcast.sendMessage("The cards have been distributed");
             distributeHonorPoints();
-            System.out.println("honor points given");
+            System.out.println("Honor points have been distributed");
+            broadcast.sendMessage("Game has started");
+            broadcast.sendMessage(String.format("%s starts the game", currentPlayer.getPlayer().getName()));
             return true;
         } else {
             System.out.println("players: " + players.size());
@@ -229,7 +234,9 @@ public class GameSingleton {
     }
 
     public void nextRound() {
+        broadcast.sendMessage(String.format("%s ended his turn", currentPlayer.getPlayer().getName()));
         currentPlayer = currentPlayer.getNext();
+        broadcast.sendMessage(String.format("It's the turn of %s", currentPlayer.getPlayer().getName()));
     }
 
     public DeckCard pickCardFromDeck() {
@@ -325,15 +332,13 @@ public class GameSingleton {
 
     public String getGameState() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Current game status\n");
-        sb.append("Players: ");
-        for(Player p : players) {
-            sb.append(p.getName()).append(" ");
-        }
-        sb.append("\n");
+        sb.append("\u001B[1;32mCurrent game status\u001B[0m\n");
+
 
         PlayerListNode iter = currentPlayer;
+        sb.append(String.format("\u001B[1;44mCurrent player:\u001B[0;1m %s\u001B[0m\n", iter.getPlayer().getName()));
         int i = 0;
+        sb.append("\u001B[1;44mPlayers:\u001B[0;1m\n");
         while(i < players.size()) {
             sb.append(iter.getPlayer().toString()).append("\n");
             iter = iter.getNext();

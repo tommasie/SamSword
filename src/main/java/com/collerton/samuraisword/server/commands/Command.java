@@ -18,6 +18,7 @@ package com.collerton.samuraisword.server.commands;
 
 import com.collerton.samuraisword.game.model.GameSingleton;
 import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.server.BroadcastMessageSingleton;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Queue;
@@ -37,6 +38,7 @@ public abstract class Command {
     protected String errorResponse;
     protected Player player;
     protected static final GameSingleton GAME = GameSingleton.getInstance();
+    protected static final BroadcastMessageSingleton BCAST = BroadcastMessageSingleton.getInstance();
 
     public Command(String name) {
         this.name = name;

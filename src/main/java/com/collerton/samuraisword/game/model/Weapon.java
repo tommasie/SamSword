@@ -62,7 +62,7 @@ public class Weapon extends DeckCard {
 
     @Override
     protected void playInternal(Player player) {
-        //TODO how to handle weapons?
+        player.requestAttack(this);
     }
 
     @Override

@@ -16,6 +16,7 @@
  */
 package com.collerton.samuraisword.server;
 
+import com.collerton.samuraisword.game.model.Player;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.List;
@@ -30,9 +31,18 @@ import org.javatuples.Pair;
 public class PlayerSocketProxy {
 
     private Set<Pair<String, Socket>> playerSocketSet;
+    private Player player;
+    private MessageInterface iface;
 
     public PlayerSocketProxy() {
         this.playerSocketSet = new HashSet<>();
+    }
+
+    public PlayerSocketProxy(Player player, MessageInterface iface) {
+        this();
+        this.player = player;
+        this.player.setProxy(this);
+        this.iface = iface;
     }
 
     public void addPlayer(String player, Socket socket) {
@@ -43,6 +53,7 @@ public class PlayerSocketProxy {
     public String requestAction(String action) {
         // Send request message to "real" player and wait the answer
         //TODO
+        iface.send(action);
         return "";
     }
 

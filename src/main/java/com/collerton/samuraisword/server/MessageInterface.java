@@ -32,10 +32,12 @@ public class MessageInterface {
     private ServiceRequest req;
 
     private Player player;
+    private PlayerSocketProxy proxy;
 
     public MessageInterface(ServiceRequest req) {
         this.req = req;
         player = null;
+        proxy = null;
     }
 
     public void receive(String message) {
@@ -52,6 +54,7 @@ public class MessageInterface {
             else {
                 command.execute(commandLineQueue);
                 player = command.getPlayer();
+                proxy = new PlayerSocketProxy(player, this);
             }
             if(command.getStatus()) {
                 send(command.getOkResponse());

@@ -16,8 +16,8 @@
  */
 package com.collerton.samuraisword.server.commands.client;
 
-import com.collerton.samuraisword.game.model.DeckCard;
 import com.collerton.samuraisword.game.model.Player;
+import com.collerton.samuraisword.game.model.Weapon;
 import com.collerton.samuraisword.server.commands.Command;
 import java.util.Queue;
 
@@ -25,37 +25,34 @@ import java.util.Queue;
  *
  * @author tommasie
  */
-public class Play extends Command {
+public class Attack extends Command {
 
-    public Play() {
-        super("Play");
+    public Attack() {
+        super("Attack");
     }
 
     @Override
     public void execute(Queue<String> params) {
+        if(params.size() != 2) {
+            errorResponse = "Only two parameters allowed";
+            executionStatus = false;
+            return;
+        }
         try {
             if(player != GAME.getCurrentPlayer()) {
-                errorResponse = "Not your turn, cheater!\n";
+                errorResponse = "Not your turn, cheater!";
                 executionStatus = false;
                 return;
             }
             String cardName = params.remove();
-            DeckCard card = player.getCardByName(cardName);
+            Weapon card = (Weapon) player.getCardByName(cardName);
             if(card != null) {
-                if(params.isEmpty()) {
-                    String msg = String.format("%s played %s", player.getName(), cardName);
-                    BCAST.sendMessage(msg);
-                    card.play();
+                Player receiver = GAME.getPlayerByName(params.remove());
+                if(receiver != null) {
+                    card.play(receiver);
                 } else {
-                    Player receiver = GAME.getPlayerByName(params.remove());
-                    if(receiver != null) {
-                        String msg = String.format("%s played %s on %s", player.getName(), cardName, receiver.getName());
-                        BCAST.sendMessage(msg);
-                        card.play(receiver);
-                    } else {
-                        errorResponse = "Wrong player name";
-                        executionStatus = false;
-                    }
+                    errorResponse = "Wrong player name";
+                    executionStatus = false;
                 }
             } else {
                 errorResponse = "This card is not in your hand\nCheck what you have with the display command";

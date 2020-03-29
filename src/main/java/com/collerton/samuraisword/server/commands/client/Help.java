@@ -37,6 +37,7 @@ public class Help extends Command {
         sb.append("- info\t\t\tDisplay current game state\n");
         sb.append("- list\t\t\tDisplay your cards\n");
         sb.append("- play <card> [user]\tPlay a card, eventually against another player\n");
+        sb.append("- attack <card> <user>\tAtack another player with a card\n");
         sb.append("- respond <life | card>\tRespond to attack or jujitsu/battlecry\n");
         sb.append("- end\t\t\tEnd your turn\n");
         sb.append("- quit\t\t\tExit the game\n");
