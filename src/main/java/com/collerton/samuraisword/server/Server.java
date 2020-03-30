@@ -59,7 +59,7 @@ public class Server extends Thread {
         while(running.get()) {
             try {
                 Socket clientSocket = socket.accept();
-                System.out.println("Reading request");
+                System.out.println("Reading request from " + socket.getInetAddress().getHostAddress());
                 executorService.submit(new ServiceRequest(clientSocket, room));
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);

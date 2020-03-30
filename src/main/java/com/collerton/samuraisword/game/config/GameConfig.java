@@ -79,8 +79,7 @@ public abstract class GameConfig {
     private List<Weapon> loadWeapons() {
         Yaml yaml = new Yaml(new Constructor(Weapon.class));
         InputStream inputStream = this.getClass()
-          .getClassLoader()
-          .getResourceAsStream("weapons.yml");
+          .getResourceAsStream("/weapons.yml");
 
         List<Weapon> weapons = new ArrayList<>();
         for (Object object : yaml.loadAll(inputStream)) {

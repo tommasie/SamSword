@@ -143,6 +143,7 @@ public class ActionTest {
         assertTrue(true);
     }
 
+    @Disabled
     @Test
     public void testJujitsuLoseResistance() {
         Player player = new Player("p1");
@@ -170,6 +171,7 @@ public class ActionTest {
         assertEquals(4, victim.getResistancePoints());
     }
 
+    @Disabled
     @Test
     public void testJujitsuLoseWeapon() {
         Player player = new Player("p1");
@@ -197,6 +199,7 @@ public class ActionTest {
         assertFalse(victim.getCards().contains(bokken));
     }
 
+    @Disabled
     @Test
     public void testBattlecryLoseResistance() {
         Player player = new Player("p1");
@@ -223,6 +226,7 @@ public class ActionTest {
         assertEquals(4, victim.getResistancePoints());
     }
 
+    @Disabled
     @Test
     public void testBattlecryLoseParry() {
         Player player = new Player("p1");

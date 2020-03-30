@@ -40,7 +40,7 @@ public class ConfigFactory {
 
     private ConfigFactory(int numPlayers) {
         this.numPlayers = numPlayers;
-        this.configPath = "config" + numPlayers + ".yml";
+        this.configPath = "/config" + numPlayers + ".yml";
         roles = new ArrayList<>();
     }
 
@@ -56,7 +56,6 @@ public class ConfigFactory {
 
         Yaml yaml = new Yaml(new Constructor(Role.class));
         InputStream inputStream = this.getClass()
-          .getClassLoader()
           .getResourceAsStream(configPath);
 
         for (Object object : yaml.loadAll(inputStream)) {

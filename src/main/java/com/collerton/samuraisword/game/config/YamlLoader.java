@@ -37,10 +37,8 @@ public class YamlLoader {
 
     private void loadProperties() {
         Yaml yaml = new Yaml(new Constructor(YamlReader.class));
-        InputStream inputStream = this.getClass()
-          .getClassLoader()
-          .getResourceAsStream("properties.yml");
-
+        InputStream inputStream = getClass()
+            .getResourceAsStream("/cards.yml");
         reader = yaml.load(inputStream);
     }
 

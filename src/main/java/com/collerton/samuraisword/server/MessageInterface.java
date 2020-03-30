@@ -50,8 +50,7 @@ public class MessageInterface {
             if(player != null) {
                 command.setPlayer(player);
                 command.execute(commandLineQueue);
-            }
-            else {
+            } else {
                 command.execute(commandLineQueue);
                 player = command.getPlayer();
                 proxy = new PlayerSocketProxy(player, this);

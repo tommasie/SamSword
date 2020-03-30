@@ -41,7 +41,8 @@ public class PlayerSocketProxy {
     public PlayerSocketProxy(Player player, MessageInterface iface) {
         this();
         this.player = player;
-        this.player.setProxy(this);
+        if(player != null)
+            this.player.setProxy(this);
         this.iface = iface;
     }
 

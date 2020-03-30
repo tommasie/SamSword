@@ -33,8 +33,7 @@ public class WeaponLoader {
     public List<DeckCard> loadWeapons() {
         Yaml yaml = new Yaml(new Constructor(Weapon.class));
         InputStream inputStream = this.getClass()
-          .getClassLoader()
-          .getResourceAsStream("weapons.yml");
+          .getResourceAsStream("/weapons.yml");
 
         List<DeckCard> weapons = new ArrayList<>();
         for (Object object : yaml.loadAll(inputStream)) {
