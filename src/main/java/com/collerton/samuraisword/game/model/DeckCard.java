@@ -16,6 +16,8 @@
  */
 package com.collerton.samuraisword.game.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Abstract parent class for all the cards that can be taken from the deck
  * (weapons, actions, properties)
@@ -87,6 +89,10 @@ public abstract class DeckCard {
         sb.append(String.format("Name: %s\n", name));
         sb.append(String.format("Description: %s\n", ""));
         return sb.toString();
+    }
+
+    public String getStrippedName() {
+        return StringUtils.stripAccents(name);
     }
 
 }

@@ -49,6 +49,8 @@ public class Attack extends Command {
             if(card != null) {
                 Player receiver = GAME.getPlayerByName(params.remove());
                 if(receiver != null) {
+                    BCAST.sendMessage(String.format("%s has attacked %s with %s",
+                                                            player.getName(), receiver.getName(), card.getName()));
                     card.play(receiver);
                 } else {
                     errorResponse = "Wrong player name";

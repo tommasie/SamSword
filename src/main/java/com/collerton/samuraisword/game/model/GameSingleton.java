@@ -122,10 +122,10 @@ public class GameSingleton {
             distributeHonorPoints();
             System.out.println("Honor points have been distributed");
             broadcast.sendMessage("Game has started");
-            broadcast.sendMessage(String.format("%s starts the game", currentPlayer.getPlayer().getName()));
+            broadcast.sendMessage(String.format("Player %s starts the game", currentPlayer.getPlayer().getName()));
             return true;
         } else {
-            System.out.println("players: " + players.size());
+            System.out.println("Not enough players: " + players.size());
             return false;
         }
     }

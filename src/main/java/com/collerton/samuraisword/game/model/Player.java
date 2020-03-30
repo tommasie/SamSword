@@ -186,7 +186,7 @@ public class Player {
 
     public DeckCard getCardByName(String cardName) {
         for(DeckCard card : cards) {
-            if(card.getName().equalsIgnoreCase(cardName)) {
+            if(card.getStrippedName().equalsIgnoreCase(cardName)) {
                 return card;
             }
         }
