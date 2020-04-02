@@ -24,7 +24,7 @@ package com.collerton.samuraisword.game.model.properties;
 public class QuickExtraction extends Property{
 
     public QuickExtraction() {
-        super("Estrazione Veloce", "description");
+        super("EstrazioneVeloce", "description");
     }
 
     @Override

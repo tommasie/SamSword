@@ -28,6 +28,8 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class models the player of the game.
@@ -37,6 +39,8 @@ import java.util.Stack;
  * @author tommasie
  */
 public class Player {
+
+    private static final Logger logger = LoggerFactory.getLogger(Player.class);
 
     private static final GameSingleton GAME = GameSingleton.getInstance();
 
@@ -56,12 +60,14 @@ public class Player {
     private boolean damageOnlyFromWeapons;
     private boolean canParryWithWeapon;
     private boolean canPickExtraCard;
-    private boolean canPickFromCemetery;
+    private boolean canPickFromGraveyard;
     private boolean ignoresDifficulty;
 
     private boolean awaitingJujitsu;
     private boolean awaitingBattlery;
     private boolean awaitingAttack;
+
+    private int cardPickCounter;
 
     // Role given at the beginning of the game
     private Role role;
@@ -91,11 +97,12 @@ public class Player {
         this.damageOnlyFromWeapons = false;
         this.canParryWithWeapon = false;
         this.canPickExtraCard = false;
-        this.canPickFromCemetery = false;
+        this.canPickFromGraveyard = false;
         this.ignoresDifficulty = false;
         this.awaitingJujitsu = false;
         this.awaitingBattlery = false;
         this.awaitingAttack = false;
+        this.cardPickCounter = 2;
         this.role = null;
         this.character = null;
         this.cards = new LinkedList<>();
@@ -148,6 +155,7 @@ public class Player {
 
     public void setRole(Role role) {
         this.role = role;
+        sendMessage("Your role is: " + role.getName());
     }
 
     public void removeRole() {
@@ -171,6 +179,7 @@ public class Player {
         // Bump the player's properties
         this.character.play();
         resetResistancePoints();
+        sendMessage("Your character is: " + character.getName());
     }
 
     public void removeCharacter() {
@@ -202,47 +211,56 @@ public class Player {
     }
 
     public void increaseHonorPoints() {
-        this.honorPoints += 1;
+        honorPoints += 1;
+        sendMessage(String.format("You now have %d honor points", honorPoints));
     }
 
     public void decreaseHonorPoints() {
         this.honorPoints -= 1;
         if(this.honorPoints == 0) {
-            System.out.println("I am a loser");
+            sendMessage("I am a loser");
             GAME.endGame();
         }
     }
 
     public void resetResistancePoints() {
         this.resistancePoints = character.getResistancePoints();
+        sendMessage(String.format("You now have %d resistance points", resistancePoints));
     }
 
     public void decreaseResistancePoints() {
         resistancePoints--;
+        sendMessage(String.format("You now have %d resistance points", resistancePoints));
     }
 
     public void increaseAttackBonus() {
         this.attackBonus += 1;
+        sendMessage(String.format("Your attacks perform +%d damage", attackBonus));
     }
 
     public void decreaseAttackBonus() {
         this.attackBonus -= 1;
+        sendMessage(String.format("Your attacks perform +%d damage", attackBonus));
     }
 
     public void increaseDistanceBonus() {
         this.distanceBonus += 1;
+        sendMessage(String.format("Your bonus distance is %d", distanceBonus));
     }
 
     public void decreaseDistanceBonus() {
         this.distanceBonus -= 1;
+        sendMessage(String.format("Your bonus distance is %d", distanceBonus));
     }
 
     public void increaseWeaponMultiplier() {
         this.weaponMultiplier += 1;
+        sendMessage(String.format("You can perform %d attacks", weaponMultiplier));
     }
 
     public void decreaseWeaponMultiplier() {
         this.weaponMultiplier -=1;
+        sendMessage(String.format("You can perform %d attacks", weaponMultiplier));
     }
 
     public boolean getSuffersLessDamage() {
@@ -277,12 +295,12 @@ public class Player {
         canPickExtraCard = true;
     }
 
-    public boolean canPickFromCemetery() {
-        return canPickFromCemetery;
+    public boolean canPickFromGraveyard() {
+        return canPickFromGraveyard;
     }
 
-    public void setCanPickFromCemetery() {
-        canPickFromCemetery = true;
+    public void setCanPickFromGraveyard() {
+        canPickFromGraveyard = true;
     }
 
     public boolean ignoresDifficulty() {
@@ -291,6 +309,17 @@ public class Player {
 
     public void setIgnoresDifficulty() {
         ignoresDifficulty = true;
+    }
+
+    public int getCardPickCounter() {
+        return cardPickCounter;
+    }
+
+    public void resetCardPickCounter() {
+        if(canPickExtraCard)
+            cardPickCounter = 3;
+        else
+            cardPickCounter = 2;
     }
 
     public void setProxy(PlayerSocketProxy proxy) {
@@ -348,7 +377,7 @@ public class Player {
     public boolean discardCard(DeckCard card) {
         if(cards.contains(card)) {
             cards.remove(card);
-            GAME.addCardToCemetery(card);
+            GAME.addCardToGraveyard(card);
             return true;
         }
         return false;
@@ -446,16 +475,35 @@ public class Player {
         this.awaitingAttack = awaitsAttack;
     }
 
+    public void beginRound() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("It's your turn\r\n");
+        sb.append(String.format("Pick %d cards\r\n", cardPickCounter));
+        if(canPickFromGraveyard) {
+            sb.append("You can pick one from the graveyard\r\n");
+        }
+        sendMessage(sb.toString());
+    }
+
+    private void sendMessage(String message) {
+        if(proxy != null) {
+            proxy.sendMessage(message);
+        }
+    }
+
     public String displayCards() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Cards in hand:\n");
-        cards.forEach(card -> sb.append(card.toString()).append("\n"));
-        sb.append("Played properties:\n");
+        sb.append("Your role: ").append(role.getName()).append("\r\n");
+        sb.append("Your character: ").append(character.getName()).append("\r\n");
+        sb.append("Your character's power: ").append(character.getDescription()).append("\r\n");
+        sb.append("Cards in hand:\r\n");
+        cards.forEach(card -> sb.append(card.toString()).append("\r\n"));
+        sb.append("Played properties:\r\n");
         for(String propertyName : playedProperties.keySet()) {
             sb.append(propertyName)
                     .append(" x")
                     .append(playedProperties.get(propertyName).size())
-                    .append("\n");
+                    .append("\r\n");
         }
         return sb.toString();
     }

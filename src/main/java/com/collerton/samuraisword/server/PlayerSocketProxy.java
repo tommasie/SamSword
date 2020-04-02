@@ -62,6 +62,10 @@ public class PlayerSocketProxy {
         return playerSocketSet.stream().findFirst().get().getValue0();
     }
 
+    public void sendMessage(String msg) {
+        iface.send(msg);
+    }
+
     public List<String> getPlayerNames() {
         List<String> players = playerSocketSet.stream().map(kv -> kv.getValue0()).collect(toList());
         return players;

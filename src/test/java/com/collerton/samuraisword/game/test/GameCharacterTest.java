@@ -79,7 +79,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
@@ -96,7 +96,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
@@ -113,7 +113,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
@@ -130,7 +130,7 @@ public class GameCharacterTest {
         assertTrue(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
@@ -147,7 +147,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertTrue(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
@@ -164,7 +164,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertTrue(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(4, player.getResistancePoints());
     }
@@ -181,7 +181,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertTrue(player.canPickFromCemetery());
+        assertTrue(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
@@ -198,7 +198,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertTrue(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }
@@ -215,7 +215,7 @@ public class GameCharacterTest {
         assertFalse(player.getSuffersLessDamage());
         assertFalse(player.canParryWithWeapon());
         assertFalse(player.canPickExtraCard());
-        assertFalse(player.canPickFromCemetery());
+        assertFalse(player.canPickFromGraveyard());
         assertFalse(player.ignoresDifficulty());
         assertEquals(5, player.getResistancePoints());
     }

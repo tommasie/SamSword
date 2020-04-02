@@ -41,7 +41,7 @@ public class Geisha extends DeckCard {
         /*
             String propertyName = "";
             DeckCard chosenCard = player.discardProperty(propertyName);
-            GAME.addCardToCemetery(chosenCard);
+            GAME.addCardToGraveyard(chosenCard);
         */
     }
 

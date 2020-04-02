@@ -28,7 +28,7 @@ public class Ieyasu extends GameCharacter{
 
     @Override
     public void play() {
-        owner.setCanPickFromCemetery();
+        owner.setCanPickFromGraveyard();
     }
 
 }

@@ -26,6 +26,7 @@ public abstract class GameCharacter {
 
     private String name;
     private int resistancePoints;
+    protected String description;
     protected Player owner;
 
     public GameCharacter(String name, int resistancePoints) {
@@ -40,6 +41,10 @@ public abstract class GameCharacter {
 
     public int getResistancePoints() {
         return resistancePoints;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setOwner(Player player) {
