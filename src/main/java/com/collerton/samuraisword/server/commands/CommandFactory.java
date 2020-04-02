@@ -22,6 +22,7 @@ import com.collerton.samuraisword.server.commands.client.Help;
 import com.collerton.samuraisword.server.commands.client.List;
 import com.collerton.samuraisword.server.commands.client.Login;
 import com.collerton.samuraisword.server.commands.client.Pass;
+import com.collerton.samuraisword.server.commands.client.Pick;
 import com.collerton.samuraisword.server.commands.client.Play;
 import com.collerton.samuraisword.server.commands.client.Respond;
 import com.collerton.samuraisword.server.commands.client.Start;
@@ -55,6 +56,8 @@ public class CommandFactory {
             return new GameInfo();
         if(command.equals("list"))
             return new List();
+        if(command.equals("pick"))
+            return new Pick();
         if(command.equals("play"))
             return new Play();
         if(command.equals("attack"))
