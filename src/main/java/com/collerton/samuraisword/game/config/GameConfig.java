@@ -28,10 +28,13 @@ import com.collerton.samuraisword.game.model.characters.Hanzo;
 import com.collerton.samuraisword.game.model.characters.Hideyoshi;
 import com.collerton.samuraisword.game.model.characters.Ieyasu;
 import com.collerton.samuraisword.game.model.characters.Kojiro;
+import com.collerton.samuraisword.game.model.characters.Musachi;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -39,41 +42,56 @@ import org.yaml.snakeyaml.constructor.Constructor;
  *
  * @author tommasie
  */
-public abstract class GameConfig {
+public class GameConfig {
 
-    protected String path;
+    private static final Logger logger = LoggerFactory.getLogger(GameConfig.class);
+
+    private int players;
 
     private List<Role> roles;
+    private List<GameCharacter> characters;
 
-    public GameConfig(String path) {
-        this.path = path;
+    public GameConfig(int players) {
+        this.players = players;
+        this.roles = new ArrayList<>();
+        this.characters = new ArrayList<>();
     }
 
-    public abstract List<Role> loadRoles();
+    public List<Role> loadRoles() {
+        if(!roles.isEmpty()) {
+            return roles;
+        }
+        String filePath = String.format("/config%d.yml", players);
+        Yaml yaml = new Yaml(new Constructor(Role.class));
+        InputStream inputStream = this.getClass()
+          .getResourceAsStream(filePath);
+
+        for (Object object : yaml.loadAll(inputStream)) {
+            Role role = (Role)object;
+            roles.add(role);
+        }
+        logger.info("{} roles loaded", roles.size());
+        return roles;
+    }
 
     public List<GameCharacter> loadCharacters() {
-        List<GameCharacter> characters = new ArrayList<>();
-        characters.add(new Benkei());
-        characters.add(new Chiyome());
-        characters.add(new Ginchiyo());
-        characters.add(new Goemon());
-        characters.add(new Hanzo());
-        characters.add(new Hideyoshi());
-        characters.add(new Ieyasu());
-        characters.add(new Kojiro());
+        if(!characters.isEmpty()) {
+            return characters;
+        }
+        characters = new ArrayList<GameCharacter>() {{
+            add(new Benkei());
+            add(new Chiyome());
+            add(new Ginchiyo());
+            add(new Goemon());
+            add(new Hanzo());
+            add(new Hideyoshi());
+            add(new Ieyasu());
+            add(new Kojiro());
+            add(new Musachi());
+        }};
 
+        logger.info("{} characters loaded", characters.size());
         return characters;
-    }
-
-    public List<DeckCard> loadCards() {
-        List<DeckCard> cards = new Stack<>();
-        // Add the Weapons
-        cards.addAll(new WeaponLoader().loadWeapons());
-        // Add the Actions
-
-        //Add the Properties
-
-        return cards;
     }
 
     private List<Weapon> loadWeapons() {

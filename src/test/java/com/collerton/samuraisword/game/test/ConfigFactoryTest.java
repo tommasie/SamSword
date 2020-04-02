@@ -17,6 +17,7 @@
 package com.collerton.samuraisword.game.test;
 
 import com.collerton.samuraisword.game.config.ConfigFactory;
+import com.collerton.samuraisword.game.config.GameConfig;
 import com.collerton.samuraisword.game.model.Role;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -51,16 +52,10 @@ public class ConfigFactoryTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-
     @Test
     public void testCheckLoadedFourRoles() {
-        ConfigFactory factory = ConfigFactory.getInstance(4);
-        List<Role> roles = factory.getRoles();
+        GameConfig gameConfig = ConfigFactory.getConfiguration(4);
+        List<Role> roles = gameConfig.loadRoles();
         assertEquals(4, roles.size());
         assertEquals("Shogun", roles.get(0).getName());
         assertEquals(1, roles.get(0).getHonorMultiplier());
@@ -74,8 +69,8 @@ public class ConfigFactoryTest {
 
     @Test
     public void testCheckLoadedFiveRoles() {
-        ConfigFactory factory = ConfigFactory.getInstance(5);
-        List<Role> roles = factory.getRoles();
+        GameConfig gameConfig = ConfigFactory.getConfiguration(5);
+        List<Role> roles = gameConfig.loadRoles();
         assertEquals(5, roles.size());
         assertEquals("Shogun", roles.get(0).getName());
         assertEquals(1, roles.get(0).getHonorMultiplier());
@@ -91,8 +86,8 @@ public class ConfigFactoryTest {
 
      @Test
     public void testCheckLoadedSixRoles() {
-        ConfigFactory factory = ConfigFactory.getInstance(6);
-        List<Role> roles = factory.getRoles();
+        GameConfig gameConfig = ConfigFactory.getConfiguration(6);
+        List<Role> roles = gameConfig.loadRoles();
         assertEquals(6, roles.size());
         assertEquals("Shogun", roles.get(0).getName());
         assertEquals(1, roles.get(0).getHonorMultiplier());

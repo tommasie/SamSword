@@ -18,6 +18,7 @@ package com.collerton.samuraisword.game.model;
 
 import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.game.config.ConfigFactory;
+import com.collerton.samuraisword.game.config.GameConfig;
 import com.collerton.samuraisword.game.config.YamlLoader;
 import com.collerton.samuraisword.game.list.PlayerListNode;
 import com.collerton.samuraisword.game.model.characters.Benkei;
@@ -39,7 +40,7 @@ import java.util.Stack;
 
 /**
  * This class is the main game class that handles the game execution,
- * as well as game stuff like the card deck and card cemetery.
+ * as well as game stuff like the card deck and card graveyard.
  *
  * @author tommasie
  */
@@ -48,6 +49,8 @@ public class GameSingleton {
     private static GameSingleton instance;
 
     private static final BroadcastMessageSingleton broadcast = BroadcastMessageSingleton.getInstance();
+
+    private GameConfig gameConfig;
 
     private YamlLoader configLoader;
 
@@ -59,17 +62,23 @@ public class GameSingleton {
 
     private PlayerListNode currentPlayer;
 
+    //Keep a reference to the currently played card in order
+    //to track the actions and attacks resolutions
+    private DeckCard cardCurrentlyPlayed;
+
     private final Stack<DeckCard> deck;
 
-    private final Stack<DeckCard> cemetery;
+    private final Stack<DeckCard> graveyard;
 
     private GameSingleton() {
         started = false;
-        this.numberPlayers = 0;
-        this.players = new HashSet<>();
-        this.currentPlayer = null;
-        this.deck = new Stack<>();
-        this.cemetery = new Stack<>();
+        numberPlayers = 0;
+        gameConfig = null;
+        players = new HashSet<>();
+        currentPlayer = null;
+        cardCurrentlyPlayed = null;
+        deck = new Stack<>();
+        graveyard = new Stack<>();
     }
 
     public static synchronized GameSingleton getInstance() {
@@ -106,8 +115,17 @@ public class GameSingleton {
         return null;
     }
 
+    public DeckCard getCardCurrentlyPlayed() {
+        return cardCurrentlyPlayed;
+    }
+
+    public void setCardCurrentlyPlayed(DeckCard card) {
+        cardCurrentlyPlayed = card;
+    }
+
     public boolean startGame() {
         if(players.size() > 3) {
+            gameConfig = ConfigFactory.getConfiguration(players.size());
             configLoader = new YamlLoader();
             giveRoles();
             broadcast.sendMessage("Roles have been distributed");
@@ -123,6 +141,7 @@ public class GameSingleton {
             System.out.println("Honor points have been distributed");
             broadcast.sendMessage("Game has started");
             broadcast.sendMessage(String.format("Player %s starts the game", currentPlayer.getPlayer().getName()));
+            currentPlayer.getPlayer().beginRound();
             return true;
         } else {
             System.out.println("Not enough players: " + players.size());
@@ -135,8 +154,7 @@ public class GameSingleton {
     }
 
     private void giveRoles() {
-        ConfigFactory factory = ConfigFactory.getInstance(players.size());
-        List<Role> roles = factory.getRoles();
+        List<Role> roles = gameConfig.loadRoles();
         Collections.shuffle(roles);
 
         for(Player player : players) {
@@ -145,17 +163,7 @@ public class GameSingleton {
     }
 
     private void giveCharacters() {
-        List<GameCharacter> characters = new ArrayList<GameCharacter>() {{
-            add(new Benkei());
-            add(new Chiyome());
-            add(new Ginchiyo());
-            add(new Goemon());
-            add(new Hanzo());
-            add(new Hideyoshi());
-            add(new Ieyasu());
-            add(new Kojiro());
-            add(new Musachi());
-        }};
+        List<GameCharacter> characters = gameConfig.loadCharacters();
         Collections.shuffle(characters);
 
         for(Player player : players) {
@@ -237,6 +245,7 @@ public class GameSingleton {
         broadcast.sendMessage(String.format("%s ended his turn", currentPlayer.getPlayer().getName()));
         currentPlayer = currentPlayer.getNext();
         broadcast.sendMessage(String.format("It's the turn of %s", currentPlayer.getPlayer().getName()));
+        currentPlayer.getPlayer().beginRound();
     }
 
     public DeckCard pickCardFromDeck() {
@@ -247,9 +256,9 @@ public class GameSingleton {
     }
 
     private void resetDeck() {
-        deck.addAll(cemetery);
+        deck.addAll(graveyard);
         Collections.shuffle(deck);
-        cemetery.clear();
+        graveyard.clear();
 
         // All players must give 1 honor point
         for (Player p : players) {
@@ -257,21 +266,44 @@ public class GameSingleton {
         }
     }
 
-    public void addCardToCemetery(DeckCard card) {
-        this.cemetery.push(card);
+    public void addCardToGraveyard(DeckCard card) {
+        this.graveyard.push(card);
     }
 
-    public DeckCard pickTopOfCemetery() {
-        if(!this.cemetery.isEmpty()) {
-            return this.cemetery.pop();
+    public DeckCard pickTopOfGraveyard() {
+        if(!this.graveyard.isEmpty()) {
+            return this.graveyard.pop();
         }
         return null;
     }
 
-    public DeckCard checkTopOfCemetery() {
-        if(this.cemetery.isEmpty())
-            return this.cemetery.peek();
+    public DeckCard checkTopOfGraveyard() {
+        if(this.graveyard.isEmpty())
+            return this.graveyard.peek();
         return null;
+    }
+
+    public int getDistance(Player p1, Player p2) {
+        if(p1.ignoresDifficulty())
+            return 0;
+        int distance = 0;
+        boolean p1Found = false, p2Found = false;
+        PlayerListNode iter = currentPlayer;
+        while(!p1Found) {
+            if(iter.getPlayer() == p1) {
+                p1Found = true;
+            }
+            iter = iter.getNext();
+        }
+        while(!p2Found) {
+            distance++;
+            if(iter.getPlayer() == p2) {
+                p2Found = true;
+            }
+            iter = iter.getNext();
+        }
+        distance += p2.getDistanceBonus();
+        return distance;
     }
 
     public void endGame() {
@@ -314,15 +346,15 @@ public class GameSingleton {
 
     public void reset() {
         removePlayers();
-        deck.addAll(cemetery);
-        cemetery.clear();
+        deck.addAll(graveyard);
+        graveyard.clear();
         //deck.clear();
-        //cemetery.clear();
+        //graveyard.clear();
     }
 
     public void printGameState() {
         System.out.printf("Current deck size: %d\n", deck.size());
-        System.out.printf("Current cemetery size: %d\n", cemetery.size());
+        System.out.printf("Current graveyard size: %d\n", graveyard.size());
         if(currentPlayer != null) {
             System.out.printf("Current player: %s\n", currentPlayer.getPlayer().getName());
             System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
