@@ -11,7 +11,6 @@ import com.collerton.samuraisword.game.model.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,69 +67,6 @@ public class GameSingletonTest {
 
         Player player = GAME.getPlayerByName("p3");
         assertNull(player);
-    }
-
-    /**
-     * Check that the game starts from the Shogun
-     */
-    @Test
-    public void testShogunStarts() {
-        Player p1 = new Player("p1");
-        Role r1 = new Role("Samurai");
-        p1.setRole(r1);
-        GAME.addPlayer(p1);
-        Player p2 = new Player("p2");
-        Role r2 = new Role("Ninja");
-        p2.setRole(r2);
-        GAME.addPlayer(p2);
-        Player p3 = new Player("p3");
-        Role r3 = new Role("Shogun");
-        p3.setRole(r3);
-        GAME.addPlayer(p3);
-        Player p4 = new Player("p4");
-        Role r4 = new Role("Ninja");
-        p4.setRole(r4);
-        GAME.addPlayer(p4);
-
-        GAME.initRound();
-        Player player = GAME.getCurrentPlayer();
-        assertEquals("Shogun", player.getRole().getName());
-    }
-
-    @Test
-    public void testLoopingRound() {
-        Player p1 = new Player("p1");
-        Role r1 = new Role("Samurai");
-        p1.setRole(r1);
-        GAME.addPlayer(p1);
-        Player p2 = new Player("p2");
-        Role r2 = new Role("Ninja");
-        p2.setRole(r2);
-        GAME.addPlayer(p2);
-        Player p3 = new Player("p3");
-        Role r3 = new Role("Shogun");
-        p3.setRole(r3);
-        GAME.addPlayer(p3);
-        Player p4 = new Player("p4");
-        Role r4 = new Role("Ninja");
-        p4.setRole(r4);
-        GAME.addPlayer(p4);
-
-        GAME.initRound();
-        Player player = GAME.getCurrentPlayer();
-        assertEquals("p3", player.getName());
-        GAME.nextRound();
-        player = GAME.getCurrentPlayer();
-        assertNotEquals("p3", player.getName());
-        GAME.nextRound();
-        player = GAME.getCurrentPlayer();
-        assertNotEquals("p3", player.getName());
-        GAME.nextRound();
-        player = GAME.getCurrentPlayer();
-        assertNotEquals("p3", player.getName());
-        GAME.nextRound();
-        player = GAME.getCurrentPlayer();
-        assertEquals("p3", player.getName());
     }
 
     @Test

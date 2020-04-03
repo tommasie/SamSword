@@ -20,21 +20,13 @@ import com.collerton.samuraisword.game.model.characters.GameCharacter;
 import com.collerton.samuraisword.game.config.ConfigFactory;
 import com.collerton.samuraisword.game.config.GameConfig;
 import com.collerton.samuraisword.game.config.YamlLoader;
-import com.collerton.samuraisword.game.list.PlayerListNode;
-import com.collerton.samuraisword.game.model.characters.Benkei;
-import com.collerton.samuraisword.game.model.characters.Chiyome;
-import com.collerton.samuraisword.game.model.characters.Ginchiyo;
-import com.collerton.samuraisword.game.model.characters.Goemon;
-import com.collerton.samuraisword.game.model.characters.Hanzo;
-import com.collerton.samuraisword.game.model.characters.Hideyoshi;
-import com.collerton.samuraisword.game.model.characters.Ieyasu;
-import com.collerton.samuraisword.game.model.characters.Kojiro;
-import com.collerton.samuraisword.game.model.characters.Musachi;
+import com.collerton.samuraisword.game.list.PlayersRound;
 import com.collerton.samuraisword.server.BroadcastMessageSingleton;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -60,7 +52,7 @@ public class GameSingleton {
 
     private final Set<Player> players;
 
-    private PlayerListNode currentPlayer;
+    private final PlayersRound playersRound;
 
     //Keep a reference to the currently played card in order
     //to track the actions and attacks resolutions
@@ -75,7 +67,7 @@ public class GameSingleton {
         numberPlayers = 0;
         gameConfig = null;
         players = new HashSet<>();
-        currentPlayer = null;
+        playersRound = new PlayersRound();
         cardCurrentlyPlayed = null;
         deck = new Stack<>();
         graveyard = new Stack<>();
@@ -102,8 +94,11 @@ public class GameSingleton {
         addPlayer(player);
     }
 
-    public Set<Player> getPlayers() {
-        return this.players;
+    public List<Player> getPlayers() {
+        //TODO change to only have the round and not the set?
+        if(playersRound.isEmpty())
+            playersRound.addAll(players);
+        return playersRound;
     }
 
     public Player getPlayerByName(String playerName) {
@@ -140,8 +135,8 @@ public class GameSingleton {
             distributeHonorPoints();
             System.out.println("Honor points have been distributed");
             broadcast.sendMessage("Game has started");
-            broadcast.sendMessage(String.format("Player %s starts the game", currentPlayer.getPlayer().getName()));
-            currentPlayer.getPlayer().beginRound();
+            broadcast.sendMessage(String.format("Player %s starts the game", playersRound.getCurrentPlayer().getName()));
+            playersRound.getCurrentPlayer().beginRound();
             return true;
         } else {
             System.out.println("Not enough players: " + players.size());
@@ -180,51 +175,26 @@ public class GameSingleton {
     }
 
     public void initRound() {
-        PlayerListNode head = null, curr, prev = null;
-        for (Player p : players) {
-            curr = new PlayerListNode(p);
-            if(head == null)
-                head = curr;
-            if (prev != null) {
-                prev.setNext(curr);
-                curr.setPrevious(prev);
-            }
-            prev = curr;
-        }
-
-        if (head != null && prev != null) {
-            prev.setNext(head);
-            head.setPrevious(prev);
-            currentPlayer = head;
-        }
-
-        setShogunFirst();
-    }
-
-    private void setShogunFirst() {
-        boolean shogunFound = false;
-        PlayerListNode iter = currentPlayer;
-        while(!shogunFound) {
-            if(iter.getPlayer().getRole().getName().equals("Shogun"))
-                shogunFound = true;
-            else {
-                iter = iter.getNext();
-            }
-        }
-        currentPlayer = iter;
+        playersRound.addAll(players);
+        playersRound.resetHead();
     }
 
     public void distributeCards() {
         // Assumption: first player in the list is the Shogun
-        PlayerListNode iter = currentPlayer;
-        int[] cardsPerPlayer = new int[]{4,5,5,6,6,7,7};
-        int i = 0;
-        while(iter.getPlayer().getCards().isEmpty()) {
-            for(int j = 0; j < cardsPerPlayer[i]; j++) {
-                iter.getPlayer().giveCard(deck.pop());
+        Queue<Integer> queue = new LinkedList<Integer>() {{
+            add(4);
+            add(5);
+            add(5);
+            add(6);
+            add(6);
+            add(7);
+            add(7);
+        }};
+        for(Player p : playersRound) {
+            int cardsToBeGiven = queue.remove();
+            for(int i = 0; i < cardsToBeGiven; i++) {
+                p.giveCard(deck.pop());
             }
-            iter = iter.getNext();
-            i++;
         }
     }
 
@@ -238,14 +208,15 @@ public class GameSingleton {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer.getPlayer();
+        return playersRound.getCurrentPlayer();
     }
 
     public void nextRound() {
-        broadcast.sendMessage(String.format("%s ended his turn", currentPlayer.getPlayer().getName()));
-        currentPlayer = currentPlayer.getNext();
-        broadcast.sendMessage(String.format("It's the turn of %s", currentPlayer.getPlayer().getName()));
-        currentPlayer.getPlayer().beginRound();
+        broadcast.sendMessage(String.format("%s ended his turn", playersRound.getCurrentPlayer().getName()));
+        playersRound.nextRound();
+        //currentPlayer = currentPlayer.getNext();
+        broadcast.sendMessage(String.format("It's the turn of %s", playersRound.getCurrentPlayer().getName()));
+        playersRound.getCurrentPlayer().beginRound();
     }
 
     public DeckCard pickCardFromDeck() {
@@ -283,6 +254,7 @@ public class GameSingleton {
         return null;
     }
 
+    /*
     public int getDistance(Player p1, Player p2) {
         if(p1.ignoresDifficulty())
             return 0;
@@ -305,6 +277,7 @@ public class GameSingleton {
         distance += p2.getDistanceBonus();
         return distance;
     }
+    */
 
     public void endGame() {
         StringBuilder sb = new StringBuilder();
@@ -326,7 +299,7 @@ public class GameSingleton {
     }
 
     public void removePlayers() {
-        for (Player p : players) {
+        for (Player p : playersRound) {
             // Remove cards form player's hand
             deck.addAll(p.getCards());
             p.getCards().clear();
@@ -340,26 +313,13 @@ public class GameSingleton {
             p.removeCharacter();
         }
         players.clear();
-        // Garbage collector should de-allocate the list if head is set to null
-        currentPlayer = null;
+        playersRound.clear();
     }
 
     public void reset() {
         removePlayers();
         deck.addAll(graveyard);
         graveyard.clear();
-        //deck.clear();
-        //graveyard.clear();
-    }
-
-    public void printGameState() {
-        System.out.printf("Current deck size: %d\n", deck.size());
-        System.out.printf("Current graveyard size: %d\n", graveyard.size());
-        if(currentPlayer != null) {
-            System.out.printf("Current player: %s\n", currentPlayer.getPlayer().getName());
-            System.out.printf("Previous player: %s\n", currentPlayer.getNext().getPlayer().getName());
-            System.out.printf("Next player: %s\n", currentPlayer.getPrevious().getPlayer().getName());
-        }
     }
 
     public String getGameState() {
@@ -367,14 +327,10 @@ public class GameSingleton {
         sb.append("\u001B[1;32mCurrent game status\u001B[0m\n");
 
 
-        PlayerListNode iter = currentPlayer;
-        sb.append(String.format("\u001B[1;44mCurrent player:\u001B[0;1m %s\u001B[0m\n", iter.getPlayer().getName()));
-        int i = 0;
+        sb.append(String.format("\u001B[1;44mCurrent player:\u001B[0;1m %s\u001B[0m\n", playersRound.getCurrentPlayer().getName()));
         sb.append("\u001B[1;44mPlayers:\u001B[0;1m\n");
-        while(i < players.size()) {
-            sb.append(iter.getPlayer().toString()).append("\n");
-            iter = iter.getNext();
-            i++;
+        for(Player p : playersRound) {
+            sb.append(p.toString()).append("\n");
         }
         return sb.toString();
     }
